@@ -130,16 +130,17 @@ class LoginPage extends StatelessWidget {
             //   ),
             // ),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text("Don't have an account?"),
-                Text(
-                  " Sign up",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-                ),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: <Widget>[
+            //     Text("Don't have an account?"),
+            //     Text(
+            //       " Sign up",
+            //       style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+            //     ),
+            //   ],
+            // ),
+
             // Container(
             //   padding: EdgeInsets.only(top: 100),
             //   height: 100,

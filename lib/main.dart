@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
                 height: 20,
               ),
               Text(
-                "BackSlash Flutter provides extraordinary flutter tutorials. Do Subscribe! ",
+                "Barangay Tinejero Official App.",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.grey[700], fontSize: 15),
               )
