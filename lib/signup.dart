@@ -5,7 +5,7 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
@@ -23,12 +23,14 @@ class SignUpPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.only(bottom: 10),
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 40,
-          ),
-          height: MediaQuery.of(context).size.height - 50,
-          width: double.infinity,
+        child: Expanded(
+            // padding: EdgeInsets.symmetric(
+            //   horizontal: 40,
+            // ),
+            // height: MediaQuery.of(context).size.height - 50,
+            // width: double.infinity,
+            child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -44,11 +46,18 @@ class SignUpPage extends StatelessWidget {
                   Text(
                     "Create an account, It's Free ",
                     style: TextStyle(fontSize: 15, color: Colors.grey[700]),
-                  )
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
               Column(
                 children: <Widget>[
+                  inputFile(label: "First Name", icon: Icons.perm_identity),
+                  inputFile(
+                      label: "Last Name", icon: Icons.perm_identity_outlined),
+                  dropdown(),
                   inputFile(label: "Email", icon: Icons.email),
                   inputFile(
                       label: "Password",
@@ -95,7 +104,7 @@ class SignUpPage extends StatelessWidget {
               // )
             ],
           ),
-        ),
+        )),
       ),
     );
   }
@@ -106,17 +115,14 @@ Widget inputFile({label, obscureText = false, icon = Icons.email}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
-      Text(
-        label,
-        style: TextStyle(
-            fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
-      ),
       SizedBox(
         height: 5,
       ),
       TextField(
         obscureText: obscureText,
         decoration: InputDecoration(
+            labelText: label,
+            hintText: label,
             prefixIcon: Icon(icon),
             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
             enabledBorder: OutlineInputBorder(
@@ -130,4 +136,35 @@ Widget inputFile({label, obscureText = false, icon = Icons.email}) {
       )
     ],
   );
+}
+
+final items = ["Select your gender", "Male", "Female"];
+String? value;
+//Widget for dropdown
+Widget dropdown() {
+  return Container(
+      margin: EdgeInsets.only(bottom: 5),
+      decoration:
+          BoxDecoration(border: Border.all(color: Colors.grey, width: 1)),
+      child: DropdownButtonFormField<String>(
+        value: value,
+        decoration: InputDecoration(prefixIcon: Icon(Icons.male)),
+        iconSize: 36,
+        icon: Icon(
+          Icons.arrow_drop_down,
+          color: Colors.black,
+        ),
+        hint: Text("Select your Gender"),
+        style: TextStyle(color: Colors.black),
+        isExpanded: true,
+        items: items.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (s) {
+          value = s;
+        },
+      ));
 }

@@ -1,3 +1,4 @@
+import 'package:barangay_system_resident/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -15,7 +16,6 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle.light,
-        backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -84,7 +84,10 @@ class LoginPage extends StatelessWidget {
                 child: MaterialButton(
                   minWidth: double.infinity,
                   height: 60,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Homepage()));
+                  },
                   color: Color(0xff0095ff),
                   elevation: 0,
                   shape: RoundedRectangleBorder(
@@ -161,17 +164,14 @@ Widget inputFile({label, obscureText = false, icon = Icons.email}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
-      Text(
-        label,
-        style: TextStyle(
-            fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
-      ),
       SizedBox(
         height: 5,
       ),
       TextField(
         obscureText: obscureText,
         decoration: InputDecoration(
+            labelText: label,
+            hintText: label,
             prefixIcon: Icon(icon),
             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
             enabledBorder: OutlineInputBorder(
