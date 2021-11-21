@@ -16,7 +16,7 @@ class _SplashState extends State<SplashScreen> {
   }
 
   _navigatetohome() async {
-    await Future.delayed(Duration(milliseconds: 1500), () {});
+    await Future.delayed(Duration(milliseconds: 3000), () {});
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => Main()));
   }
@@ -25,13 +25,32 @@ class _SplashState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
-          child: Text(
-            'Splash Screen',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
+          child: SafeArea(
+              child: Container(
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height,
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              height: MediaQuery.of(context).size.height / 3,
+              decoration: BoxDecoration(
+                  image: DecorationImage(image: AssetImage("assets/logo.png"))),
+            ),
+            Column(
+              children: <Widget>[
+                Text(
+                  "Barangay Tinejero Official App.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey[700], fontSize: 18),
+                )
+              ],
+            ),
+          ],
         ),
-      ),
+      ))),
     );
   }
 }

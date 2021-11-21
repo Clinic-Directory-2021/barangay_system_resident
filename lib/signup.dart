@@ -1,7 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
+  @override
+  _SignUpState createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUpPage> {
+  DateTime? _dateTime;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,6 +70,8 @@ class SignUpPage extends StatelessWidget {
                 children: <Widget>[
                   inputFile(label: "First Name", icon: Icons.perm_identity),
                   inputFile(
+                      label: "Last name", icon: Icons.perm_identity_rounded),
+                  inputFile(
                       label: "Last Name", icon: Icons.perm_identity_outlined),
                   dropdown(),
                   inputFile(label: "Email", icon: Icons.email),
@@ -73,6 +83,63 @@ class SignUpPage extends StatelessWidget {
                       label: "Confirm Password",
                       icon: Icons.password,
                       obscureText: true),
+                  inputFile(label: "Civil Status", icon: Icons.add_location),
+                  inputFile(label: "Age", icon: Icons.assignment_ind_outlined),
+                  //Date picker
+                  Container(
+                    padding: EdgeInsets.only(left: 5, right: 5),
+                    margin: EdgeInsets.only(bottom: 5),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey, width: 1)),
+                    child: Row(
+                      children: <Widget>[
+                        // ignore: unnecessary_null_comparison
+                        ElevatedButton(
+                            style:
+                                ElevatedButton.styleFrom(primary: Colors.green),
+                            onPressed: () {
+                              showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(2001),
+                                      lastDate: DateTime(2222))
+                                  .then((date) {
+                                setState(() {
+                                  _dateTime = date;
+                                });
+                              });
+                            },
+                            child: Text('Pick a Date')),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          _dateTime == null
+                              ? 'Select your Birth Date'
+                              : convertDateTimeDisplay(_dateTime.toString()),
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
+                  ),
+                  //End of date picker
+                  inputFile(label: "Phone Number", icon: Icons.ad_units),
+                  inputFile(
+                      label: "Birth Place",
+                      icon: Icons.add_location_alt_outlined),
+                  inputFile(label: "Street", icon: Icons.add_road),
+                  inputFile(
+                      label: "Purok/Area",
+                      icon: Icons.add_location_alt_outlined),
+                  inputFile(label: "Citizenship", icon: Icons.book),
+                  inputFile(
+                      label: "Differently Disabled Person",
+                      icon: Icons.accessible_rounded),
+                  inputFile(
+                      label: "Relation to Head Family",
+                      icon: Icons.account_balance),
+                  inputFile(label: "Religion", icon: Icons.add),
                 ],
               ),
               Container(
@@ -146,7 +213,7 @@ Widget inputFile({label, obscureText = false, icon = Icons.email}) {
 
 final items = ["Select your gender", "Male", "Female"];
 String? value;
-//Widget for dropdown
+//Widget for dropdown/Gender
 Widget dropdown() {
   return Container(
       margin: EdgeInsets.only(bottom: 5),
@@ -173,4 +240,13 @@ Widget dropdown() {
           value = s;
         },
       ));
+}
+
+//Date picker for Birth Date
+String convertDateTimeDisplay(String date) {
+  final DateFormat displayFormater = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
+  final DateFormat serverFormater = DateFormat('MM-dd-yyyy');
+  final DateTime displayDate = displayFormater.parse(date);
+  final String formatted = serverFormater.format(displayDate);
+  return formatted;
 }
