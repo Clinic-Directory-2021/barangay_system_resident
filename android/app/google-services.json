@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "587251378360",
+    "firebase_url": "https://barangay-system-2021-b00f3-default-rtdb.firebaseio.com",
+    "project_id": "barangay-system-2021-b00f3",
+    "storage_bucket": "barangay-system-2021-b00f3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587251378360:android:c22c88214255cb5ca3ec4d",
+        "android_client_info": {
+          "package_name": "com.example.barangay_system_resident"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "587251378360-mfg0kntband6nmtfemq09g94t54brevf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.barangay_system_resident",
+            "certificate_hash": "90b05df8a3d9b5dc8f37407e4e6c6dbf63018f6c"
+          }
+        },
+        {
+          "client_id": "587251378360-l3sd04r2q8h86e9qee08k6pe73frk9ai.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcITPESyJSz-oiJAinFuByDO_gYM74_DQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "587251378360-l3sd04r2q8h86e9qee08k6pe73frk9ai.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
