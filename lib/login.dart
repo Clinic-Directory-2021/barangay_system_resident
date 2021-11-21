@@ -1,4 +1,5 @@
 import 'package:barangay_system_resident/homepage.dart';
+import 'package:barangay_system_resident/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -18,13 +19,20 @@ class LoginPage extends StatelessWidget {
         systemOverlayStyle: SystemUiOverlayStyle.light,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Main()));
           },
           icon: Icon(
             Icons.arrow_back_ios,
             size: 20,
-            color: Colors.black,
+            color: Colors.white,
           ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Color(0xff20bf55), Color(0xff01baef)],
+                  begin: Alignment.topLeft)),
         ),
       ),
       body: Container(
@@ -88,7 +96,7 @@ class LoginPage extends StatelessWidget {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Homepage()));
                   },
-                  color: Color(0xff0095ff),
+                  color: Colors.green,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50)),

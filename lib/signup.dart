@@ -17,8 +17,14 @@ class SignUpPage extends StatelessWidget {
           icon: Icon(
             Icons.arrow_back_ios,
             size: 20,
-            color: Colors.black,
+            color: Colors.white,
           ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Color(0xff20bf55), Color(0xff01baef)],
+                  begin: Alignment.topLeft)),
         ),
       ),
       body: SingleChildScrollView(
@@ -78,7 +84,7 @@ class SignUpPage extends StatelessWidget {
                   minWidth: double.infinity,
                   height: 60,
                   onPressed: () {},
-                  color: Color(0xff0095ff),
+                  color: Colors.green,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),

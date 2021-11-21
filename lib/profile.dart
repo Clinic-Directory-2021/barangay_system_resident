@@ -37,19 +37,76 @@ class Profile extends StatelessWidget {
             ),
             Column(
               children: <Widget>[
-                textfield(hintText: "First name"),
+                textfield(hintText: "First name", icon: Icons.person),
                 SizedBox(
                   height: 20,
                 ),
-                textfield(hintText: "Midle name"),
+                textfield(
+                    hintText: "Midle name", icon: Icons.account_box_outlined),
                 SizedBox(
                   height: 20,
                 ),
-                textfield(hintText: "Last name"),
+                textfield(hintText: "Last name", icon: Icons.account_box),
                 SizedBox(
                   height: 20,
                 ),
                 textfield(hintText: "Email"),
+                SizedBox(
+                  height: 20,
+                ),
+                textfield(hintText: "Gender", icon: Icons.male),
+                SizedBox(
+                  height: 20,
+                ),
+                textfield(hintText: "Civil Status", icon: Icons.add_location),
+                SizedBox(
+                  height: 20,
+                ),
+                textfield(hintText: "Age", icon: Icons.assignment_ind_outlined),
+                SizedBox(
+                  height: 20,
+                ),
+                textfield(hintText: "Birth Date", icon: Icons.cake),
+                SizedBox(
+                  height: 20,
+                ),
+                textfield(hintText: "Phone Number", icon: Icons.ad_units),
+                SizedBox(
+                  height: 20,
+                ),
+                textfield(
+                    hintText: "Birth Place",
+                    icon: Icons.add_location_alt_outlined),
+                SizedBox(
+                  height: 20,
+                ),
+                textfield(hintText: "Street", icon: Icons.add_road),
+                SizedBox(
+                  height: 20,
+                ),
+                textfield(
+                    hintText: "Purok/Area",
+                    icon: Icons.add_location_alt_outlined),
+                SizedBox(
+                  height: 20,
+                ),
+                textfield(hintText: "Citizenship", icon: Icons.book),
+                SizedBox(
+                  height: 20,
+                ),
+                textfield(
+                    hintText: "Differently Disabled Person",
+                    icon: Icons.accessible_rounded),
+                SizedBox(
+                  height: 20,
+                ),
+                textfield(
+                    hintText: "Relation to Head Family",
+                    icon: Icons.account_balance),
+                SizedBox(
+                  height: 20,
+                ),
+                textfield(hintText: "Religion", icon: Icons.add),
                 SizedBox(
                   height: 20,
                 ),
@@ -64,13 +121,15 @@ class Profile extends StatelessWidget {
 
 //textfield in profile
 
-Widget textfield({required String hintText}) {
+Widget textfield({required String hintText, icon = Icons.email}) {
   return Material(
       elevation: 4,
       shadowColor: Colors.grey,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: TextField(
+        enabled: false,
         decoration: InputDecoration(
+          prefixIcon: Icon(icon),
           hintText: hintText,
           hintStyle: TextStyle(
               letterSpacing: 2,

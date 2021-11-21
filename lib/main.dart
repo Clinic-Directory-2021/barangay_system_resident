@@ -1,15 +1,16 @@
 import 'package:barangay_system_resident/login.dart';
 import 'package:barangay_system_resident/signup.dart';
+import 'package:barangay_system_resident/splashscreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: HomePage(),
+    home: SplashScreen(),
   ));
 }
 
-class HomePage extends StatelessWidget {
+class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +65,7 @@ class HomePage extends StatelessWidget {
                     },
                     //*Defining the shape
                     shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Color(0xff0095ff)),
+                        side: BorderSide(color: Colors.green),
                         borderRadius: BorderRadius.circular(50)),
                     child: Text(
                       "Login",
@@ -84,7 +85,7 @@ class HomePage extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => SignUpPage()));
                     },
-                    color: Color(0xff0095ff),
+                    color: Colors.green,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50)),
                     child: Text(
