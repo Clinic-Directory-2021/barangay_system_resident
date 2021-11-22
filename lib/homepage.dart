@@ -3,14 +3,17 @@ import 'package:barangay_system_resident/history.dart';
 import 'package:barangay_system_resident/login.dart';
 import 'package:barangay_system_resident/profile.dart';
 import 'package:barangay_system_resident/notifications.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class Homepage extends StatelessWidget {
-  void handleClick(int item, BuildContext context) {
+
+  Future<void> handleClick(int item, BuildContext context) async {
     switch (item) {
       case 1:
         {
+          await FirebaseAuth.instance.signOut();
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => LoginPage()));
           break;

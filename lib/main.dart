@@ -1,3 +1,4 @@
+import 'package:barangay_system_resident/homepage.dart';
 import 'package:barangay_system_resident/login.dart';
 import 'package:barangay_system_resident/signup.dart';
 import 'package:barangay_system_resident/splashscreen.dart';
@@ -6,7 +7,7 @@ import 'package:flutter/material.dart';
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
 
-
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

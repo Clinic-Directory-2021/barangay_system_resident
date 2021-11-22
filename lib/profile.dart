@@ -1,114 +1,173 @@
 import 'package:flutter/material.dart';
 
-class Profile extends StatelessWidget {
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class Profile extends StatefulWidget {
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  var currentUser = FirebaseAuth.instance.currentUser;
+
+  String last_name = "";
+
+  // fetchData() {
+  //   DocumentReference documentReference = FirebaseFirestore.instance
+  //       .collection('resident_list')
+  //       .doc('VCHXn9yWFmgOiOf85eIQmr9ofMy2');
+
+  //   documentReference.snapshots().listen((snapshot) {
+  //     setState(() {
+  //       last_name = snapshot['last_name'];
+  //     });
+  //   });
+  // }
+  CollectionReference users =
+      FirebaseFirestore.instance.collection('resident_list');
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.only(bottom: 10),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 40),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                // Text(
-                //   "Sign Up",
-                //   style: TextStyle(
-                //       fontSize: 30, fontWeight: FontWeight.bold),
-                // ),
-                // SizedBox(
-                //   height: 20,
-                // ),
-                // Text(
-                //   "Create an account, It's Free ",
-                //   style: TextStyle(fontSize: 15, color: Colors.grey[700]),
-                // ),
-                SizedBox(
-                  height: 20,
-                ),
-              ],
+    return FutureBuilder<DocumentSnapshot>(
+      future: users.doc(currentUser?.uid).get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text("Something went wrong");
+        }
+
+        if (snapshot.hasData && !snapshot.data!.exists) {
+          return Text("Document does not exist");
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          Map<String, dynamic> data =
+              snapshot.data!.data() as Map<String, dynamic>;
+          // return Text("Full Name: ${data['first_name']} ${data['last_name']}");
+          return SingleChildScrollView(
+            padding: EdgeInsets.only(bottom: 10),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 40),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      // Text(
+                      //   "Sign Up",
+                      //   style: TextStyle(
+                      //       fontSize: 30, fontWeight: FontWeight.bold),
+                      // ),
+                      // SizedBox(
+                      //   height: 20,
+                      // ),
+                      // Text(
+                      //   "Create an account, It's Free ",
+                      //   style: TextStyle(fontSize: 15, color: Colors.grey[700]),
+                      // ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: <Widget>[
+                      textfield(
+                          hintText: data['first_name'], icon: Icons.person),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      textfield(
+                          hintText: data['middle_name'],
+                          icon: Icons.account_box_outlined),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      textfield(
+                          hintText: data['last_name'], icon: Icons.account_box),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      textfield(hintText: data['email']),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      textfield(hintText: data['gender'], icon: Icons.male),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      textfield(
+                          hintText: data['civil_status'],
+                          icon: Icons.add_location),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      textfield(
+                          hintText: data['age'],
+                          icon: Icons.assignment_ind_outlined),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      textfield(hintText: data['birthdate'], icon: Icons.cake),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      textfield(
+                          hintText: data['phone_number'], icon: Icons.ad_units),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      textfield(
+                          hintText: data['birthplace'],
+                          icon: Icons.add_location_alt_outlined),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      textfield(hintText: data['street'], icon: Icons.add_road),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      textfield(
+                          hintText: data['purok'],
+                          icon: Icons.add_location_alt_outlined),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      textfield(
+                          hintText: data['citizenship'], icon: Icons.book),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      textfield(
+                          hintText: data['diff_disabled'],
+                          icon: Icons.accessible_rounded),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      textfield(
+                          hintText: data['relation'],
+                          icon: Icons.account_balance),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      textfield(hintText: data['religion'], icon: Icons.add),
+                      SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            Column(
-              children: <Widget>[
-                textfield(hintText: "First name", icon: Icons.person),
-                SizedBox(
-                  height: 20,
-                ),
-                textfield(
-                    hintText: "Midle name", icon: Icons.account_box_outlined),
-                SizedBox(
-                  height: 20,
-                ),
-                textfield(hintText: "Last name", icon: Icons.account_box),
-                SizedBox(
-                  height: 20,
-                ),
-                textfield(hintText: "Email"),
-                SizedBox(
-                  height: 20,
-                ),
-                textfield(hintText: "Gender", icon: Icons.male),
-                SizedBox(
-                  height: 20,
-                ),
-                textfield(hintText: "Civil Status", icon: Icons.add_location),
-                SizedBox(
-                  height: 20,
-                ),
-                textfield(hintText: "Age", icon: Icons.assignment_ind_outlined),
-                SizedBox(
-                  height: 20,
-                ),
-                textfield(hintText: "Birth Date", icon: Icons.cake),
-                SizedBox(
-                  height: 20,
-                ),
-                textfield(hintText: "Phone Number", icon: Icons.ad_units),
-                SizedBox(
-                  height: 20,
-                ),
-                textfield(
-                    hintText: "Birth Place",
-                    icon: Icons.add_location_alt_outlined),
-                SizedBox(
-                  height: 20,
-                ),
-                textfield(hintText: "Street", icon: Icons.add_road),
-                SizedBox(
-                  height: 20,
-                ),
-                textfield(
-                    hintText: "Purok/Area",
-                    icon: Icons.add_location_alt_outlined),
-                SizedBox(
-                  height: 20,
-                ),
-                textfield(hintText: "Citizenship", icon: Icons.book),
-                SizedBox(
-                  height: 20,
-                ),
-                textfield(
-                    hintText: "Differently Disabled Person",
-                    icon: Icons.accessible_rounded),
-                SizedBox(
-                  height: 20,
-                ),
-                textfield(
-                    hintText: "Relation to Head Family",
-                    icon: Icons.account_balance),
-                SizedBox(
-                  height: 20,
-                ),
-                textfield(hintText: "Religion", icon: Icons.add),
-                SizedBox(
-                  height: 20,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+          );
+        }
+
+        return Text("loading");
+      },
     );
   }
 }

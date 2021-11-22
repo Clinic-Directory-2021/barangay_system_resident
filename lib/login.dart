@@ -143,19 +143,20 @@ class _LoginPageState extends State<LoginPage> {
                   height: 60,
                   onPressed: () async {
                     try {
-                        UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-                          email: _email,
-                          password: _password
-                        );
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Homepage()));
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == 'user-not-found') {
-                          print('No user found for that email.');
-                        } else if (e.code == 'wrong-password') {
-                          print('Wrong password provided for that user.');
-                        }
+                      UserCredential userCredential = await FirebaseAuth
+                          .instance
+                          .signInWithEmailAndPassword(
+                              email: _email, password: _password);
+
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Homepage()));
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'user-not-found') {
+                        print('No user found for that email.');
+                      } else if (e.code == 'wrong-password') {
+                        print('Wrong password provided for that user.');
                       }
+                    }
                   },
                   color: Colors.green,
                   elevation: 0,
