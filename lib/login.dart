@@ -3,13 +3,59 @@ import 'package:barangay_system_resident/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
 
 // class LoginPage extends StatefulWidget {
 //   @override
 //   _LoginPageState createState() => _LoginPageState();
 // }
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  String _email = "", _password = "";
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  Widget inputFile({label, obscureText = false, icon = Icons.email, storeTo}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(
+          height: 5,
+        ),
+        TextField(
+          obscureText: obscureText,
+          onChanged: (value) {
+            setState(() {
+              if (storeTo == 'email') {
+                _email = value.trim();
+              } else {
+                _password = value.trim();
+              }
+            });
+          },
+          decoration: InputDecoration(
+              labelText: label,
+              hintText: label,
+              prefixIcon: Icon(icon),
+              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey))),
+        ),
+        SizedBox(
+          height: 10,
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,11 +115,13 @@ class LoginPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 40),
               child: Column(
                 children: <Widget>[
-                  inputFile(label: "Email", icon: Icons.email),
+                  inputFile(
+                      label: "Email", icon: Icons.email, storeTo: 'email'),
                   inputFile(
                       label: "password",
                       obscureText: true,
-                      icon: Icons.password)
+                      icon: Icons.password,
+                      storeTo: 'password')
                 ],
               ),
             ),
@@ -93,9 +141,21 @@ class LoginPage extends StatelessWidget {
                 child: MaterialButton(
                   minWidth: double.infinity,
                   height: 60,
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Homepage()));
+                  onPressed: () async {
+                    try {
+                        UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                          email: _email,
+                          password: _password
+                        );
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Homepage()));
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'user-not-found') {
+                          print('No user found for that email.');
+                        } else if (e.code == 'wrong-password') {
+                          print('Wrong password provided for that user.');
+                        }
+                      }
                   },
                   color: Colors.green,
                   elevation: 0,
@@ -166,32 +226,4 @@ class LoginPage extends StatelessWidget {
       ),
     );
   }
-}
-
-//Widget for inputfile
-Widget inputFile({label, obscureText = false, icon = Icons.email}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      SizedBox(
-        height: 5,
-      ),
-      TextField(
-        obscureText: obscureText,
-        decoration: InputDecoration(
-            labelText: label,
-            hintText: label,
-            prefixIcon: Icon(icon),
-            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
-            ),
-            border:
-                OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
-      ),
-      SizedBox(
-        height: 10,
-      )
-    ],
-  );
 }
