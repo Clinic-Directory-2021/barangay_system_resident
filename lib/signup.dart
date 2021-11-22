@@ -37,13 +37,7 @@ class _SignUpState extends State<SignUpPage> {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.only(bottom: 10),
-        child: Expanded(
-            // padding: EdgeInsets.symmetric(
-            //   horizontal: 40,
-            // ),
-            // height: MediaQuery.of(context).size.height - 50,
-            // width: double.infinity,
-            child: Padding(
+        child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 40),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -177,7 +171,7 @@ class _SignUpState extends State<SignUpPage> {
               // )
             ],
           ),
-        )),
+        ),
       ),
     );
   }
