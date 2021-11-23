@@ -5,6 +5,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Profile extends StatefulWidget {
+  static String fullName = "";
+  static String gender = "";
+  static String profilePic = "";
+  static String email = "";
   @override
   State<Profile> createState() => _ProfileState();
 }
@@ -13,8 +17,6 @@ class _ProfileState extends State<Profile> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   var currentUser = FirebaseAuth.instance.currentUser;
-
-  String last_name = "";
 
   // fetchData() {
   //   DocumentReference documentReference = FirebaseFirestore.instance
@@ -48,6 +50,14 @@ class _ProfileState extends State<Profile> {
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
           // return Text("Full Name: ${data['first_name']} ${data['last_name']}");
+          Profile.fullName = data['first_name'] +
+              " " +
+              data['middle_name'] +
+              " " +
+              data['last_name'];
+          Profile.gender = data['gender'];
+          Profile.profilePic = data['resident_img_url'];
+          Profile.email = data['email'];
           return SingleChildScrollView(
             padding: EdgeInsets.only(bottom: 10),
             child: Padding(

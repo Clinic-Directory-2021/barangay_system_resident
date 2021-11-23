@@ -1,8 +1,36 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'package:barangay_system_resident/profile.dart';
+
 class Dashboard extends StatelessWidget {
+  var currentUser = FirebaseAuth.instance.currentUser;
+
   @override
   Widget build(BuildContext context) {
+    CollectionReference collection_ref =
+        FirebaseFirestore.instance.collection('certificate_requests');
+
+    Future<void> addRequests() {
+      String epochTime = DateTime.now().millisecondsSinceEpoch.toString();
+      // Call the user's CollectionReference to add a new user
+      return collection_ref
+          .doc(epochTime)
+          .set({
+            'certificate_type': value,
+            'request_id': epochTime,
+            'full_name': Profile.fullName,
+            'gender': Profile.gender,
+            'resident_img_url': Profile.profilePic,
+            'email': Profile.email,
+            'resident_id': currentUser?.uid,
+            'status': 'Pending',
+          })
+          .then((value) => print("Request Added"))
+          .catchError((error) => print("Failed to add Request: $error"));
+    }
+
     return Center(
       child: Column(
         children: <Widget>[
@@ -17,7 +45,9 @@ class Dashboard extends StatelessWidget {
             height: 20,
           ),
           MaterialButton(
-            onPressed: () {},
+            onPressed: () {
+              addRequests();
+            },
             color: Colors.green,
             elevation: 0,
             shape:
