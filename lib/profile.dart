@@ -5,10 +5,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Profile extends StatefulWidget {
-  static String fullName = "";
+  static String first_name = "";
+  static String middle_name = "";
+  static String last_name = "";
   static String gender = "";
   static String profilePic = "";
   static String email = "";
+
+  static String age = "";
+  static String birthdate = "";
+  static String birthplace = "";
+  static String civil_status = "";
+
   @override
   State<Profile> createState() => _ProfileState();
 }
@@ -50,14 +58,17 @@ class _ProfileState extends State<Profile> {
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
           // return Text("Full Name: ${data['first_name']} ${data['last_name']}");
-          Profile.fullName = data['first_name'] +
-              " " +
-              data['middle_name'] +
-              " " +
-              data['last_name'];
+          Profile.first_name = data['first_name'];
+          Profile.middle_name = data['middle_name'];
+          Profile.last_name = data['last_name'];
           Profile.gender = data['gender'];
           Profile.profilePic = data['resident_img_url'];
           Profile.email = data['email'];
+
+          Profile.age = data['age'];
+          Profile.birthdate = data['birthdate'];
+          Profile.birthplace = data['birthplace'];
+          Profile.civil_status = data['civil_status'];
           return SingleChildScrollView(
             padding: EdgeInsets.only(bottom: 10),
             child: Padding(

@@ -8,13 +8,12 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class Homepage extends StatelessWidget {
-
   Future<void> handleClick(int item, BuildContext context) async {
     switch (item) {
       case 1:
         {
           await FirebaseAuth.instance.signOut();
-          Navigator.push(
+          Navigator.pop(
               context, MaterialPageRoute(builder: (context) => LoginPage()));
           break;
         }

@@ -20,12 +20,18 @@ class Dashboard extends StatelessWidget {
           .set({
             'certificate_type': value,
             'request_id': epochTime,
-            'full_name': Profile.fullName,
+            'first_name': Profile.first_name,
+            'middle_name': Profile.middle_name,
+            'last_name': Profile.last_name,
             'gender': Profile.gender,
             'resident_img_url': Profile.profilePic,
             'email': Profile.email,
             'resident_id': currentUser?.uid,
             'status': 'Pending',
+            'age': Profile.age,
+            'birthdate': Profile.birthdate,
+            'birthplace': Profile.birthplace,
+            'civil_status': Profile.civil_status,
           })
           .then((value) => print("Request Added"))
           .catchError((error) => print("Failed to add Request: $error"));
