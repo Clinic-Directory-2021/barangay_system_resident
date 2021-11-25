@@ -65,7 +65,7 @@ class _NotificationsState extends State<Notifications> {
         setState(() {
           certificates.add([
             doc["clearance_type"],
-            doc["residency_pdf_url"],
+            doc["blotter_pdf_url"],
           ]);
         });
       });
@@ -80,7 +80,7 @@ class _NotificationsState extends State<Notifications> {
         setState(() {
           certificates.add([
             doc["clearance_type"],
-            doc["residency_pdf_url"],
+            doc["building_pdf_url"],
           ]);
         });
       });
@@ -95,7 +95,7 @@ class _NotificationsState extends State<Notifications> {
         setState(() {
           certificates.add([
             doc["clearance_type"],
-            doc["residency_pdf_url"],
+            doc["clearance_pdf_url"],
           ]);
         });
       });
@@ -110,7 +110,7 @@ class _NotificationsState extends State<Notifications> {
         setState(() {
           certificates.add([
             doc["clearance_type"],
-            doc["residency_pdf_url"],
+            doc["excavation_pdf_url"],
           ]);
         });
       });
@@ -125,7 +125,7 @@ class _NotificationsState extends State<Notifications> {
         setState(() {
           certificates.add([
             doc["clearance_type"],
-            doc["residency_pdf_url"],
+            doc["fencing_pdf_url"],
           ]);
         });
       });
@@ -140,7 +140,7 @@ class _NotificationsState extends State<Notifications> {
         setState(() {
           certificates.add([
             doc["clearance_type"],
-            doc["residency_pdf_url"],
+            doc["indigent_pdf_url"],
           ]);
         });
       });
@@ -155,7 +155,7 @@ class _NotificationsState extends State<Notifications> {
         setState(() {
           certificates.add([
             doc["clearance_type"],
-            doc["residency_pdf_url"],
+            doc["water_pdf_url"],
           ]);
         });
       });
@@ -170,7 +170,7 @@ class _NotificationsState extends State<Notifications> {
         setState(() {
           certificates.add([
             doc["clearance_type"],
-            doc["residency_pdf_url"],
+            doc["wiring_pdf_url"],
           ]);
         });
       });
