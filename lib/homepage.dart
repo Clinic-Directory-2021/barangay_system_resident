@@ -19,12 +19,22 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   var currentUser = FirebaseAuth.instance.currentUser;
+  CollectionReference currentUserCollectionRef =
+      FirebaseFirestore.instance.collection('resident_list');
+  Future<void> updateUser() {
+    return currentUserCollectionRef
+        .doc(currentUser?.uid)
+        .update({'status': 'Offline'})
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
 
   Future<void> handleClick(int item, BuildContext context) async {
     switch (item) {
       case 1:
         {
           await FirebaseAuth.instance.signOut();
+          updateUser();
           Navigator.pop(
               context, MaterialPageRoute(builder: (context) => LoginPage()));
           break;

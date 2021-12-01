@@ -27,10 +27,20 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   var currentUser = FirebaseAuth.instance.currentUser;
 
+  CollectionReference currentUserCollectionRef =
+      FirebaseFirestore.instance.collection('resident_list');
+  Future<void> updateUser() {
+    return currentUserCollectionRef
+        .doc(currentUser?.uid)
+        .update({'status': 'Online'})
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
+
   @override
   void initState() {
     super.initState();
-
+    updateUser();
     FirebaseFirestore.instance
         .collection('resident_list')
         .where('resident_id', isEqualTo: currentUser?.uid)
