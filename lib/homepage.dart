@@ -6,13 +6,35 @@ import 'package:barangay_system_resident/notifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+int total_certificates = 0;
+
 // ignore: must_be_immutable
-class Homepage extends StatelessWidget {
+class Homepage extends StatefulWidget {
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  var currentUser = FirebaseAuth.instance.currentUser;
+  CollectionReference currentUserCollectionRef =
+      FirebaseFirestore.instance.collection('resident_list');
+  Future<void> updateUser() {
+    return currentUserCollectionRef
+        .doc(currentUser?.uid)
+        .update({'status': 'Offline'})
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
+
   Future<void> handleClick(int item, BuildContext context) async {
     switch (item) {
       case 1:
         {
           await FirebaseAuth.instance.signOut();
+          updateUser();
           Navigator.pop(
               context, MaterialPageRoute(builder: (context) => LoginPage()));
           break;
@@ -21,6 +43,120 @@ class Homepage extends StatelessWidget {
       case 1:
         break;
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    total_certificates = 0;
+    // START OF GETTING TOTAL NUMBER OF NOTIFICATIONS
+    FirebaseFirestore.instance
+        .collection('list_of_issued_certificate_residency')
+        .where('resident_id', isEqualTo: currentUser?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        setState(() {
+          total_certificates++;
+        });
+      });
+    });
+
+    FirebaseFirestore.instance
+        .collection('list_of_issued_certificate_blotter')
+        .where('resident_id', isEqualTo: currentUser?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        setState(() {
+          total_certificates++;
+        });
+      });
+    });
+
+    FirebaseFirestore.instance
+        .collection('list_of_issued_certificate_building')
+        .where('resident_id', isEqualTo: currentUser?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        setState(() {
+          total_certificates++;
+        });
+      });
+    });
+
+    FirebaseFirestore.instance
+        .collection('list_of_issued_certificate_clearance')
+        .where('resident_id', isEqualTo: currentUser?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        setState(() {
+          total_certificates++;
+        });
+      });
+    });
+
+    FirebaseFirestore.instance
+        .collection('list_of_issued_certificate_excavation')
+        .where('resident_id', isEqualTo: currentUser?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        setState(() {
+          total_certificates++;
+        });
+      });
+    });
+
+    FirebaseFirestore.instance
+        .collection('list_of_issued_certificate_fencing')
+        .where('resident_id', isEqualTo: currentUser?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        setState(() {
+          total_certificates++;
+        });
+      });
+    });
+
+    FirebaseFirestore.instance
+        .collection('list_of_issued_certificate_indigent')
+        .where('resident_id', isEqualTo: currentUser?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        setState(() {
+          total_certificates++;
+        });
+      });
+    });
+
+    FirebaseFirestore.instance
+        .collection('list_of_issued_certificate_water')
+        .where('resident_id', isEqualTo: currentUser?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        setState(() {
+          total_certificates++;
+        });
+      });
+    });
+
+    FirebaseFirestore.instance
+        .collection('list_of_issued_certificate_wiring')
+        .where('resident_id', isEqualTo: currentUser?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        setState(() {
+          total_certificates++;
+        });
+      });
+    });
   }
 
   @override
@@ -38,7 +174,8 @@ class Homepage extends StatelessWidget {
                             builder: (context) => Notifications()));
                   },
                   iconData: Icons.notifications,
-                  notificationCount: 11), //Place how many new notification
+                  notificationCount:
+                      total_certificates), //Place how many new notification
               PopupMenuButton<int>(
                 onSelected: (item) => handleClick(item, context),
                 itemBuilder: (context) => [

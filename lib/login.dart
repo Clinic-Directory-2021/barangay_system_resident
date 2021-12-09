@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:fluttertoast/fluttertoast.dart';
+
 // class LoginPage extends StatefulWidget {
 //   @override
 //   _LoginPageState createState() => _LoginPageState();
@@ -153,8 +155,18 @@ class _LoginPageState extends State<LoginPage> {
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'user-not-found') {
                         print('No user found for that email.');
+                        Fluttertoast.showToast(
+                          msg: "No user found for that email.",
+                          toastLength: Toast.LENGTH_SHORT,
+                          fontSize: 18,
+                        );
                       } else if (e.code == 'wrong-password') {
                         print('Wrong password provided for that user.');
+                        Fluttertoast.showToast(
+                          msg: "Wrong password provided for that user.",
+                          toastLength: Toast.LENGTH_SHORT,
+                          fontSize: 18,
+                        );
                       }
                     }
                   },

@@ -4,6 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:fluttertoast/fluttertoast.dart';
+
 class SignUpPage extends StatefulWidget {
   @override
   _SignUpState createState() => _SignUpState();
@@ -11,8 +16,141 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpState extends State<SignUpPage> {
   DateTime? _dateTime;
+
+  String _first_name = "",
+      _middle_name = "",
+      _last_name = "",
+      _email = "",
+      _password = "",
+      _confirm_password = "",
+      _civil_status = "",
+      _age = "",
+      _phone_number = "",
+      _birthplace = "",
+      _purok = "",
+      _citizenship = "",
+      _diff_disabled = "",
+      _relation = "",
+      _religion = "",
+      _user_id = "";
+
+//Widget for inputfile
+  Widget inputFile({label, obscureText = false, icon = Icons.email, storeTo}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(
+          height: 5,
+        ),
+        TextField(
+          obscureText: obscureText,
+          onChanged: (value) {
+            setState(() {
+              if (storeTo == 'email') {
+                _email = value.trim();
+              } else if (storeTo == 'password') {
+                _password = value.trim();
+              } else if (storeTo == 'confirm_password') {
+                _confirm_password = value.trim();
+              } else if (storeTo == 'first_name') {
+                _first_name = value.trim();
+              } else if (storeTo == 'middle_name') {
+                _middle_name = value.trim();
+              } else if (storeTo == 'last_name') {
+                _last_name = value.trim();
+              } else if (storeTo == 'civil_status') {
+                _civil_status = value.trim();
+              } else if (storeTo == 'age') {
+                _age = value.trim();
+              } else if (storeTo == 'phone_number') {
+                _phone_number = value.trim();
+              } else if (storeTo == 'birthplace') {
+                _birthplace = value.trim();
+              } else if (storeTo == 'purok') {
+                _purok = value.trim();
+              } else if (storeTo == 'citizenship') {
+                _citizenship = value.trim();
+              } else if (storeTo == 'diff_disabled') {
+                _diff_disabled = value.trim();
+              } else if (storeTo == 'relation') {
+                _relation = value.trim();
+              } else if (storeTo == 'religion') {
+                _religion = value.trim();
+              }
+            });
+          },
+          decoration: InputDecoration(
+              labelText: label,
+              hintText: label,
+              prefixIcon: Icon(icon),
+              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey))),
+        ),
+        SizedBox(
+          height: 10,
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    CollectionReference collection_ref =
+        FirebaseFirestore.instance.collection('resident_list');
+    Future<void> addResident() async {
+      // Call the user's CollectionReference to add a new user
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: _email, password: _password);
+        _user_id = userCredential.user!.uid;
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print('The password provided is too weak.');
+          Fluttertoast.showToast(
+            msg: "The password provided is too weak.",
+            toastLength: Toast.LENGTH_SHORT,
+            fontSize: 18,
+          );
+        } else if (e.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
+          Fluttertoast.showToast(
+            msg: "The account already exists for that email.",
+            toastLength: Toast.LENGTH_SHORT,
+            fontSize: 18,
+          );
+        }
+      } catch (e) {
+        print(e);
+      }
+      return collection_ref
+          .doc(_user_id)
+          .set({
+            'resident_id': _user_id,
+            'first_name': _first_name,
+            'middle_name': _middle_name,
+            'last_name': _last_name,
+            'gender': genderValue,
+            'email': _email,
+            'age': _age,
+            'birthdate': _dateTime,
+            'birthplace': _birthplace,
+            'civil_status': _civil_status,
+            'purok': _purok,
+            'citizenship': _citizenship,
+            'relation': _relation,
+            'diff_disabled': _diff_disabled,
+            'phone_number': _phone_number,
+            'religion': _religion,
+            'status': 'Offline',
+          })
+          .then((value) => print("Resident Added"))
+          .catchError((error) => print("Failed to add Resident: $error"));
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
@@ -63,23 +201,39 @@ class _SignUpState extends State<SignUpPage> {
               ),
               Column(
                 children: <Widget>[
-                  inputFile(label: "First Name", icon: Icons.perm_identity),
                   inputFile(
-                      label: "Last name", icon: Icons.perm_identity_rounded),
+                      label: "First Name",
+                      icon: Icons.perm_identity,
+                      storeTo: 'first_name'),
                   inputFile(
-                      label: "Last Name", icon: Icons.perm_identity_outlined),
+                      label: "Middle name",
+                      icon: Icons.perm_identity_rounded,
+                      storeTo: 'middle_name'),
+                  inputFile(
+                      label: "Last Name",
+                      icon: Icons.perm_identity_outlined,
+                      storeTo: 'last_name'),
                   dropdown(),
-                  inputFile(label: "Email", icon: Icons.email),
+                  inputFile(
+                      label: "Email", icon: Icons.email, storeTo: 'email'),
                   inputFile(
                       label: "Password",
                       icon: Icons.password,
-                      obscureText: true),
+                      obscureText: true,
+                      storeTo: 'password'),
                   inputFile(
                       label: "Confirm Password",
                       icon: Icons.password,
-                      obscureText: true),
-                  inputFile(label: "Civil Status", icon: Icons.add_location),
-                  inputFile(label: "Age", icon: Icons.assignment_ind_outlined),
+                      obscureText: true,
+                      storeTo: 'confirm_password'),
+                  inputFile(
+                      label: "Civil Status",
+                      icon: Icons.add_location,
+                      storeTo: 'civil_status'),
+                  inputFile(
+                      label: "Age",
+                      icon: Icons.assignment_ind_outlined,
+                      storeTo: 'age'),
                   //Date picker
                   Container(
                     padding: EdgeInsets.only(left: 5, right: 5),
@@ -119,22 +273,33 @@ class _SignUpState extends State<SignUpPage> {
                     ),
                   ),
                   //End of date picker
-                  inputFile(label: "Phone Number", icon: Icons.ad_units),
+                  inputFile(
+                      label: "Phone Number",
+                      icon: Icons.ad_units,
+                      storeTo: 'phone_number'),
                   inputFile(
                       label: "Birth Place",
-                      icon: Icons.add_location_alt_outlined),
+                      icon: Icons.add_location_alt_outlined,
+                      storeTo: 'birthplace'),
                   inputFile(label: "Street", icon: Icons.add_road),
                   inputFile(
                       label: "Purok/Area",
-                      icon: Icons.add_location_alt_outlined),
-                  inputFile(label: "Citizenship", icon: Icons.book),
+                      icon: Icons.add_location_alt_outlined,
+                      storeTo: 'purok'),
+                  inputFile(
+                      label: "Citizenship",
+                      icon: Icons.book,
+                      storeTo: 'citizenship'),
                   inputFile(
                       label: "Differently Disabled Person",
-                      icon: Icons.accessible_rounded),
+                      icon: Icons.accessible_rounded,
+                      storeTo: 'diff_disabled'),
                   inputFile(
                       label: "Relation to Head Family",
-                      icon: Icons.account_balance),
-                  inputFile(label: "Religion", icon: Icons.add),
+                      icon: Icons.account_balance,
+                      storeTo: 'relation'),
+                  inputFile(
+                      label: "Religion", icon: Icons.add, storeTo: 'religion'),
                 ],
               ),
               Container(
@@ -145,7 +310,42 @@ class _SignUpState extends State<SignUpPage> {
                 child: MaterialButton(
                   minWidth: double.infinity,
                   height: 60,
-                  onPressed: () {},
+                  onPressed: () {
+                    if (_password == _confirm_password &&
+                        _first_name != "" &&
+                        _middle_name != "" &&
+                        _last_name != "" &&
+                        _email != "" &&
+                        _password != "" &&
+                        _confirm_password != "" &&
+                        _civil_status != "" &&
+                        _age != "" &&
+                        _phone_number != "" &&
+                        _birthplace != "" &&
+                        _purok != "" &&
+                        _citizenship != "" &&
+                        _diff_disabled != "" &&
+                        _relation != "" &&
+                        _religion != "" &&
+                        _dateTime != null &&
+                        genderValue != "") {
+                      addResident();
+                    } else if (_password != _confirm_password) {
+                      print("Password Do not Match");
+                      Fluttertoast.showToast(
+                        msg: "Password Do not Match",
+                        toastLength: Toast.LENGTH_SHORT,
+                        fontSize: 18,
+                      );
+                    } else {
+                      print("please fill up all the fields");
+                      Fluttertoast.showToast(
+                        msg: "please fill up all the fields",
+                        toastLength: Toast.LENGTH_SHORT,
+                        fontSize: 18,
+                      );
+                    }
+                  },
                   color: Colors.green,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
@@ -178,36 +378,8 @@ class _SignUpState extends State<SignUpPage> {
   }
 }
 
-//Widget for inputfile
-Widget inputFile({label, obscureText = false, icon = Icons.email}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      SizedBox(
-        height: 5,
-      ),
-      TextField(
-        obscureText: obscureText,
-        decoration: InputDecoration(
-            labelText: label,
-            hintText: label,
-            prefixIcon: Icon(icon),
-            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
-            ),
-            border:
-                OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
-      ),
-      SizedBox(
-        height: 10,
-      )
-    ],
-  );
-}
-
 final items = ["Select your gender", "Male", "Female"];
-String? value;
+String? genderValue;
 //Widget for dropdown/Gender
 Widget dropdown() {
   return Container(
@@ -215,7 +387,7 @@ Widget dropdown() {
       decoration:
           BoxDecoration(border: Border.all(color: Colors.grey, width: 1)),
       child: DropdownButtonFormField<String>(
-        value: value,
+        value: genderValue,
         decoration: InputDecoration(prefixIcon: Icon(Icons.male)),
         iconSize: 36,
         icon: Icon(
@@ -232,7 +404,7 @@ Widget dropdown() {
           );
         }).toList(),
         onChanged: (s) {
-          value = s;
+          genderValue = s;
         },
       ));
 }

@@ -7,6 +7,18 @@ import 'package:barangay_system_resident/profile.dart';
 bool shouldDisplay = false;
 final puposeController = TextEditingController();
 
+String first_name = "";
+String middle_name = "";
+String last_name = "";
+String gender = "";
+String profilePic = "";
+String email = "";
+
+String age = "";
+String birthdate = "";
+String birthplace = "";
+String civil_status = "";
+
 class Dashboard extends StatefulWidget {
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -14,6 +26,43 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   var currentUser = FirebaseAuth.instance.currentUser;
+
+  CollectionReference currentUserCollectionRef =
+      FirebaseFirestore.instance.collection('resident_list');
+  Future<void> updateUser() {
+    return currentUserCollectionRef
+        .doc(currentUser?.uid)
+        .update({'status': 'Online'})
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    updateUser();
+    FirebaseFirestore.instance
+        .collection('resident_list')
+        .where('resident_id', isEqualTo: currentUser?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        setState(() {
+          first_name = doc["first_name"];
+          middle_name = doc["middle_name"];
+          last_name = doc["last_name"];
+          gender = doc["gender"];
+          profilePic = doc["resident_img_url"];
+
+          email = doc['email'];
+          age = doc['age'];
+          birthdate = doc['birthdate'];
+          birthplace = doc['birthplace'];
+          civil_status = doc['civil_status'];
+        });
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,18 +77,18 @@ class _DashboardState extends State<Dashboard> {
           .set({
             'certificate_type': value,
             'request_id': epochTime,
-            'first_name': Profile.first_name,
-            'middle_name': Profile.middle_name,
-            'last_name': Profile.last_name,
-            'gender': Profile.gender,
-            'resident_img_url': Profile.profilePic,
-            'email': Profile.email,
+            'first_name': first_name,
+            'middle_name': middle_name,
+            'last_name': last_name,
+            'gender': gender,
+            'resident_img_url': profilePic,
+            'email': email,
             'resident_id': currentUser?.uid,
             'status': 'Pending',
-            'age': Profile.age,
-            'birthdate': Profile.birthdate,
-            'birthplace': Profile.birthplace,
-            'civil_status': Profile.civil_status,
+            'age': age,
+            'birthdate': birthdate,
+            'birthplace': birthplace,
+            'civil_status': civil_status,
             'purpose': puposeController.text,
           })
           .then((value) => print("Request Added"))
