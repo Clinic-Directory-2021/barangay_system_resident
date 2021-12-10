@@ -1,27 +1,18 @@
-import 'package:barangay_system_resident/forgot_password_page.dart';
-import 'package:barangay_system_resident/homepage.dart';
-import 'package:barangay_system_resident/main.dart';
+import 'package:barangay_system_resident/login.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
-
-import 'package:fluttertoast/fluttertoast.dart';
 
 // class LoginPage extends StatefulWidget {
 //   @override
 //   _LoginPageState createState() => _LoginPageState();
 // }
 
-class LoginPage extends StatefulWidget {
+class ForgotPassPage extends StatefulWidget {
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<ForgotPassPage> createState() => _ForgotPassPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _ForgotPassPageState extends State<ForgotPassPage> {
   String _email = "", _password = "";
-
-  final FirebaseAuth auth = FirebaseAuth.instance;
 
   Widget inputFile({label, obscureText = false, icon = Icons.email, storeTo}) {
     return Column(
@@ -62,15 +53,10 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        elevation: 0,
-        systemOverlayStyle: SystemUiOverlayStyle.light,
         leading: IconButton(
           onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Main()));
+            Navigator.pop(context);
           },
           icon: Icon(
             Icons.arrow_back_ios,
@@ -98,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Text(
-                    "Login",
+                    "Forgot Password",
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
@@ -108,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: 20,
                   ),
                   Text(
-                    "Login to your account",
+                    "Change your password by sending request to your email",
                     style: TextStyle(fontSize: 15, color: Colors.grey[700]),
                   )
                 ],
@@ -120,29 +106,6 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   inputFile(
                       label: "Email", icon: Icons.email, storeTo: 'email'),
-                  inputFile(
-                      label: "password",
-                      obscureText: true,
-                      icon: Icons.password,
-                      storeTo: 'password'),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  GestureDetector(
-                      child: Text(
-                        "Forgot your password?",
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontStyle: FontStyle.italic,
-                            decoration: TextDecoration.underline,
-                            color: Colors.black),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ForgotPassPage()));
-                      })
                 ],
               ),
             ),
@@ -162,39 +125,16 @@ class _LoginPageState extends State<LoginPage> {
                 child: MaterialButton(
                   minWidth: double.infinity,
                   height: 60,
-                  onPressed: () async {
-                    try {
-                      UserCredential userCredential = await FirebaseAuth
-                          .instance
-                          .signInWithEmailAndPassword(
-                              email: _email, password: _password);
-
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Homepage()));
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'user-not-found') {
-                        print('No user found for that email.');
-                        Fluttertoast.showToast(
-                          msg: "No user found for that email.",
-                          toastLength: Toast.LENGTH_SHORT,
-                          fontSize: 18,
-                        );
-                      } else if (e.code == 'wrong-password') {
-                        print('Wrong password provided for that user.');
-                        Fluttertoast.showToast(
-                          msg: "Wrong password provided for that user.",
-                          toastLength: Toast.LENGTH_SHORT,
-                          fontSize: 18,
-                        );
-                      }
-                    }
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
                   },
                   color: Colors.green,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50)),
                   child: Text(
-                    "Login",
+                    "Send Request",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 18,

@@ -39,7 +39,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  image_picker: ^0.8.3+3
+  image_picker: ^0.8.4+4
 
 flutter_icons:
   image_path: "assets/logo.png"

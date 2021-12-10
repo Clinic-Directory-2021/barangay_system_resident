@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +17,52 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUpPage> {
+  File? image;
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() => this.image = imageTemporary);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future takeImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() => this.image = imageTemporary);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Widget buildButton(
+          {required String title,
+          required IconData icon,
+          required VoidCallback onClicked}) =>
+      ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            primary: Colors.white,
+            onPrimary: Colors.black,
+            textStyle: TextStyle(fontSize: 20)),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              size: 15,
+            ),
+            const SizedBox(width: 10),
+            Text(title)
+          ],
+        ),
+        onPressed: onClicked,
+      );
   DateTime? _dateTime;
 
   String _first_name = "",
@@ -201,6 +249,28 @@ class _SignUpState extends State<SignUpPage> {
               ),
               Column(
                 children: <Widget>[
+                  image != null
+                      ? ClipOval(
+                          child: Image.file(
+                          image!,
+                          width: 160,
+                          height: 160,
+                          fit: BoxFit.cover,
+                        ))
+                      : FlutterLogo(size: 160),
+                  Row(
+                    children: [
+                      buildButton(
+                          title: "Pick Gallery",
+                          icon: Icons.image_outlined,
+                          onClicked: () => pickImage()),
+                      buildButton(
+                          title: "Use Camera",
+                          icon: Icons.camera,
+                          onClicked: () => takeImage()),
+                    ],
+                  ),
+
                   inputFile(
                       label: "First Name",
                       icon: Icons.perm_identity,
