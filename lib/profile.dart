@@ -22,6 +22,22 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  List data = [];
+  Widget listItem({title, leading = Icons.label, subtitle}) {
+    return ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      children: [
+        ListTile(
+          title: Text(title),
+          subtitle: Text(subtitle),
+          leading: Icon(leading),
+        ),
+      ],
+    );
+  }
+
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   var currentUser = FirebaseAuth.instance.currentUser;
@@ -66,123 +82,133 @@ class _ProfileState extends State<Profile> {
           Profile.email = data['email'];
 
           Profile.age = data['age'];
-          Profile.birthdate = data['birthdate'];
+          Profile.birthdate = data['birthdate'].toString();
           Profile.birthplace = data['birthplace'];
           Profile.civil_status = data['civil_status'];
           return SingleChildScrollView(
             padding: EdgeInsets.only(bottom: 10),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      // Text(
-                      //   "Sign Up",
-                      //   style: TextStyle(
-                      //       fontSize: 30, fontWeight: FontWeight.bold),
-                      // ),
-                      // SizedBox(
-                      //   height: 20,
-                      // ),
-                      // Text(
-                      //   "Create an account, It's Free ",
-                      //   style: TextStyle(fontSize: 15, color: Colors.grey[700]),
-                      // ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
+            child: Column(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height / 4.5,
+                  decoration: const BoxDecoration(
+                      color: Color(0xff075E54),
+                      border: Border(
+                          bottom: BorderSide(
+                        width: 1,
+                        color: Colors.grey,
+                      ))),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            ClipOval(
+                                child: Image(
+                              height: MediaQuery.of(context).size.height / 5,
+                              width: MediaQuery.of(context).size.height / 5,
+                              image: AssetImage("assets/logo.png"),
+                            )),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Text(
+                                  data['first_name'] +
+                                      " " +
+                                      data['middle_name'] +
+                                      " " +
+                                      data['last_name'],
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      fontSize: 24, color: Colors.white),
+                                ),
+                                Text(
+                                  data['email'],
+                                  style: const TextStyle(color: Colors.white),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  Column(
-                    children: <Widget>[
-                      textfield(
-                          hintText: data['first_name'], icon: Icons.person),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      textfield(
-                          hintText: data['middle_name'],
-                          icon: Icons.account_box_outlined),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      textfield(
-                          hintText: data['last_name'], icon: Icons.account_box),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      textfield(hintText: data['email']),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      textfield(hintText: data['gender'], icon: Icons.male),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      textfield(
-                          hintText: data['civil_status'],
-                          icon: Icons.add_location),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      textfield(
-                          hintText: data['age'],
-                          icon: Icons.assignment_ind_outlined),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      textfield(hintText: data['birthdate'], icon: Icons.cake),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      textfield(
-                          hintText: data['phone_number'], icon: Icons.ad_units),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      textfield(
-                          hintText: data['birthplace'],
-                          icon: Icons.add_location_alt_outlined),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      textfield(hintText: data['street'], icon: Icons.add_road),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      textfield(
-                          hintText: data['purok'],
-                          icon: Icons.add_location_alt_outlined),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      textfield(
-                          hintText: data['citizenship'], icon: Icons.book),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      textfield(
-                          hintText: data['diff_disabled'],
-                          icon: Icons.accessible_rounded),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      textfield(
-                          hintText: data['relation'],
-                          icon: Icons.account_balance),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      textfield(hintText: data['religion'], icon: Icons.add),
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 50),
+                listItem(
+                  title: data['gender'],
+                  leading: Icons.male,
+                  subtitle: "Gender",
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 50),
+                listItem(
+                  title: data['civil_status'],
+                  leading: Icons.male,
+                  subtitle: "Civil Status",
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 50),
+                listItem(
+                  title: data['age'],
+                  leading: Icons.person,
+                  subtitle: "Age",
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 50),
+                listItem(
+                  title: data['birthdate'].toString(),
+                  leading: Icons.cake,
+                  subtitle: "Birth Date",
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 50),
+                listItem(
+                  title: data['birthplace'],
+                  leading: Icons.location_city,
+                  subtitle: "Birth Place",
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 50),
+                listItem(
+                  title: data['phone_number'],
+                  leading: Icons.phone,
+                  subtitle: "Phone Number",
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 50),
+                listItem(
+                  title: data['street'],
+                  leading: Icons.add_road,
+                  subtitle: "Street",
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 50),
+                listItem(
+                  title: data['purok'],
+                  leading: Icons.add_location_alt_outlined,
+                  subtitle: "Purok",
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 50),
+                listItem(
+                  title: data['citizenship'],
+                  leading: Icons.book,
+                  subtitle: "Citizenship",
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 50),
+                listItem(
+                  title: data['diff_disabled'],
+                  leading: Icons.accessible_rounded,
+                  subtitle: "Differently Disabled",
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 50),
+                listItem(
+                  title: data['relation'],
+                  leading: Icons.account_balance,
+                  subtitle: "Relation to Head Famly",
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 50),
+                listItem(
+                  title: data['religion'],
+                  leading: Icons.add,
+                  subtitle: "Religion",
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 50),
+              ],
             ),
           );
         }

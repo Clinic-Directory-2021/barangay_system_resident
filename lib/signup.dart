@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -17,6 +19,9 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUpPage> {
+  bool _password_obscureText = true;
+  bool _confirm_obscureText = true;
+
   File? image;
   Future pickImage() async {
     try {
@@ -80,10 +85,12 @@ class _SignUpState extends State<SignUpPage> {
       _diff_disabled = "",
       _relation = "",
       _religion = "",
-      _user_id = "";
+      _user_id = "",
+      _street = "";
 
 //Widget for inputfile
-  Widget inputFile({label, obscureText = false, icon = Icons.email, storeTo}) {
+  Widget inputFile(
+      {label, obscureText = false, icon = Icons.email, storeTo, suffix}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -124,6 +131,8 @@ class _SignUpState extends State<SignUpPage> {
                 _relation = value.trim();
               } else if (storeTo == 'religion') {
                 _religion = value.trim();
+              } else if (storeTo == 'street') {
+                _religion = value.trim();
               }
             });
           },
@@ -131,6 +140,7 @@ class _SignUpState extends State<SignUpPage> {
               labelText: label,
               hintText: label,
               prefixIcon: Icon(icon),
+              suffixIcon: suffix,
               contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
@@ -194,13 +204,13 @@ class _SignUpState extends State<SignUpPage> {
             'phone_number': _phone_number,
             'religion': _religion,
             'status': 'Offline',
+            'street': _street
           })
           .then((value) => print("Resident Added"))
           .catchError((error) => print("Failed to add Resident: $error"));
     }
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
@@ -289,12 +299,32 @@ class _SignUpState extends State<SignUpPage> {
                   inputFile(
                       label: "Password",
                       icon: Icons.password,
-                      obscureText: true,
+                      suffix: IconButton(
+                        icon: Icon(_password_obscureText
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                        onPressed: () {
+                          setState(() {
+                            _password_obscureText = !_password_obscureText;
+                          });
+                        },
+                      ),
+                      obscureText: _password_obscureText,
                       storeTo: 'password'),
                   inputFile(
                       label: "Confirm Password",
                       icon: Icons.password,
-                      obscureText: true,
+                      suffix: IconButton(
+                        icon: Icon(_confirm_obscureText
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                        onPressed: () {
+                          setState(() {
+                            _confirm_obscureText = !_confirm_obscureText;
+                          });
+                        },
+                      ),
+                      obscureText: _confirm_obscureText,
                       storeTo: 'confirm_password'),
                   inputFile(
                       label: "Civil Status",
@@ -356,6 +386,11 @@ class _SignUpState extends State<SignUpPage> {
                       label: "Purok/Area",
                       icon: Icons.add_location_alt_outlined,
                       storeTo: 'purok'),
+                  inputFile(
+                    label: "Street",
+                    icon: Icons.add_road,
+                    storeTo: 'street',
+                  ),
                   inputFile(
                       label: "Citizenship",
                       icon: Icons.book,

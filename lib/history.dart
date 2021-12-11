@@ -9,6 +9,22 @@ class History extends StatefulWidget {
 
 class _HistoryState extends State<History> {
   List certificates = [];
+  Widget listItem({title, leading = Icons.label, trailing, subtitle}) {
+    return ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      children: [
+        ListTile(
+          title: Text(title),
+          subtitle: Text(subtitle),
+          leading: Icon(leading),
+          trailing: trailing,
+        ),
+      ],
+    );
+  }
+
   var currentUser = FirebaseAuth.instance.currentUser;
 
   @override
@@ -36,21 +52,11 @@ class _HistoryState extends State<History> {
   Widget build(BuildContext context) {
     return ListView(children: <Widget>[
       for (var i in certificates)
-        Container(
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-                color: Colors.grey, // set border color
-                width: 1.0), // set border width
-          ),
-          child: Column(
-            children: [
-              Text(i[0] + '\n' + i[1]),
-              SizedBox(height: 10),
-            ],
-          ),
-        )
+        listItem(
+            title: i[0],
+            subtitle: i[1],
+            leading: Icons.app_registration,
+            trailing: Icon(Icons.check)),
     ]);
   }
 }
