@@ -104,10 +104,9 @@ class _ProfileState extends State<Profile> {
                         Row(
                           children: [
                             ClipOval(
-                                child: Image(
-                              height: MediaQuery.of(context).size.height / 5,
-                              width: MediaQuery.of(context).size.height / 5,
-                              image: AssetImage("assets/logo.png"),
+                                child: Image.network(
+                              data['resident_img_url'],
+                              width: 150,
                             )),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,

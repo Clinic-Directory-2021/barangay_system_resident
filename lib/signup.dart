@@ -13,6 +13,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
+import 'package:barangay_system_resident/login.dart';
+
 class SignUpPage extends StatefulWidget {
   @override
   _SignUpState createState() => _SignUpState();
@@ -21,6 +26,10 @@ class SignUpPage extends StatefulWidget {
 class _SignUpState extends State<SignUpPage> {
   bool _password_obscureText = true;
   bool _confirm_obscureText = true;
+  String img_file_directory = "";
+  String fileName = "";
+
+  var currentUser = FirebaseAuth.instance.currentUser;
 
   File? image;
   Future pickImage() async {
@@ -29,7 +38,11 @@ class _SignUpState extends State<SignUpPage> {
       if (image == null) return;
 
       final imageTemporary = File(image.path);
-      setState(() => this.image = imageTemporary);
+      setState(() {
+        fileName = image.path.split('/').last;
+        this.image = imageTemporary;
+      });
+      // setState(() => this.image = imageTemporary);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
@@ -41,7 +54,11 @@ class _SignUpState extends State<SignUpPage> {
       if (image == null) return;
 
       final imageTemporary = File(image.path);
-      setState(() => this.image = imageTemporary);
+      setState(() {
+        fileName = image.path.split('/').last;
+        this.image = imageTemporary;
+      });
+      // setState(() => this.image = imageTemporary);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
@@ -159,6 +176,7 @@ class _SignUpState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     CollectionReference collection_ref =
         FirebaseFirestore.instance.collection('resident_list');
+
     Future<void> addResident() async {
       // Call the user's CollectionReference to add a new user
       try {
@@ -184,6 +202,26 @@ class _SignUpState extends State<SignUpPage> {
       } catch (e) {
         print(e);
       }
+
+      img_file_directory = _user_id + '/resident_images/' + fileName;
+      try {
+        await firebase_storage.FirebaseStorage.instance
+            .ref(img_file_directory)
+            .putFile(image!);
+      } on firebase_core.FirebaseException catch (e) {
+        // e.g, e.code == 'canceled'
+        Fluttertoast.showToast(
+          msg: e.message.toString(),
+          toastLength: Toast.LENGTH_SHORT,
+          fontSize: 18,
+        );
+      }
+
+      String downloadURL = await firebase_storage.FirebaseStorage.instance
+          .ref(img_file_directory)
+          .getDownloadURL();
+      Navigator.pop(
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
       return collection_ref
           .doc(_user_id)
           .set({
@@ -194,7 +232,7 @@ class _SignUpState extends State<SignUpPage> {
             'gender': genderValue,
             'email': _email,
             'age': _age,
-            'birthdate': _dateTime,
+            'birthdate': _dateTime.toString(),
             'birthplace': _birthplace,
             'civil_status': _civil_status,
             'purok': _purok,
@@ -204,7 +242,9 @@ class _SignUpState extends State<SignUpPage> {
             'phone_number': _phone_number,
             'religion': _religion,
             'status': 'Offline',
-            'street': _street
+            'street': _street,
+            'resident_img_directory': img_file_directory,
+            'resident_img_url': downloadURL,
           })
           .then((value) => print("Resident Added"))
           .catchError((error) => print("Failed to add Resident: $error"));
@@ -433,7 +473,8 @@ class _SignUpState extends State<SignUpPage> {
                         _relation != "" &&
                         _religion != "" &&
                         _dateTime != null &&
-                        genderValue != "") {
+                        genderValue != "" &&
+                        image != null) {
                       addResident();
                     } else if (_password != _confirm_password) {
                       print("Password Do not Match");
@@ -516,7 +557,7 @@ Widget dropdown() {
 
 //Date picker for Birth Date
 String convertDateTimeDisplay(String date) {
-  final DateFormat displayFormater = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
+  final DateFormat displayFormater = DateFormat('yyyy-MM-dd');
   final DateFormat serverFormater = DateFormat('MM-dd-yyyy');
   final DateTime displayDate = displayFormater.parse(date);
   final String formatted = serverFormater.format(displayDate);
