@@ -1,6 +1,10 @@
 import 'package:barangay_system_resident/login.dart';
 import 'package:flutter/material.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:fluttertoast/fluttertoast.dart';
+
 // class LoginPage extends StatefulWidget {
 //   @override
 //   _LoginPageState createState() => _LoginPageState();
@@ -12,7 +16,7 @@ class ForgotPassPage extends StatefulWidget {
 }
 
 class _ForgotPassPageState extends State<ForgotPassPage> {
-  String _email = "", _password = "";
+  String _email = "";
 
   Widget inputFile({label, obscureText = false, icon = Icons.email, storeTo}) {
     return Column(
@@ -27,8 +31,6 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
             setState(() {
               if (storeTo == 'email') {
                 _email = value.trim();
-              } else {
-                _password = value.trim();
               }
             });
           },
@@ -125,9 +127,19 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
                 child: MaterialButton(
                   minWidth: double.infinity,
                   height: 60,
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  onPressed: () async {
+                    try {
+                      await FirebaseAuth.instance
+                          .sendPasswordResetEmail(email: _email);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
+                    } on FirebaseAuthException catch (e) {
+                      Fluttertoast.showToast(
+                        msg: e.message.toString(),
+                        toastLength: Toast.LENGTH_SHORT,
+                        fontSize: 18,
+                      );
+                    }
                   },
                   color: Colors.green,
                   elevation: 0,
