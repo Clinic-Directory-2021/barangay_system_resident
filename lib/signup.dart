@@ -245,6 +245,7 @@ class _SignUpState extends State<SignUpPage> {
             'street': _street,
             'resident_img_directory': img_file_directory,
             'resident_img_url': downloadURL,
+            'request_remaining': 5,
           })
           .then((value) => print("Resident Added"))
           .catchError((error) => print("Failed to add Resident: $error"));
