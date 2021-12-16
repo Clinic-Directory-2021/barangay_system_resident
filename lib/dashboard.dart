@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:barangay_system_resident/profile.dart';
 
+import 'package:fluttertoast/fluttertoast.dart';
+
 bool shouldDisplay = false;
 final puposeController = TextEditingController();
 
@@ -18,6 +20,10 @@ String age = "";
 String birthdate = "";
 String birthplace = "";
 String civil_status = "";
+
+int request_remaining = 5;
+
+var pastDueDate;
 
 class Dashboard extends StatefulWidget {
   @override
@@ -59,9 +65,26 @@ class _DashboardState extends State<Dashboard> {
           birthdate = doc['birthdate'];
           birthplace = doc['birthplace'];
           civil_status = doc['civil_status'];
+          pastDueDate =
+              DateTime.parse(doc['requestWillBeAvailable'].toDate().toString());
         });
       });
     });
+    DocumentReference documentReference = FirebaseFirestore.instance
+        .collection('resident_list')
+        .doc(currentUser?.uid);
+
+    var today = DateTime.now();
+    var oneDayFromNow = today.add(const Duration(days: 1));
+
+    final bool isPastDate = pastDueDate.isBefore(today);
+
+    if (isPastDate) {
+      documentReference.update({
+        'request_remaining': 5,
+        'requestWillBeAvailable': oneDayFromNow,
+      });
+    }
   }
 
   @override
@@ -69,31 +92,98 @@ class _DashboardState extends State<Dashboard> {
     CollectionReference collection_ref =
         FirebaseFirestore.instance.collection('certificate_requests');
 
-    Future<void> addRequests() {
+    DocumentReference documentReference = FirebaseFirestore.instance
+        .collection('resident_list')
+        .doc(currentUser?.uid);
+
+    Future<void> addRequests() async {
       String epochTime = DateTime.now().millisecondsSinceEpoch.toString();
-      // Call the user's CollectionReference to add a new user
-      return collection_ref
-          .doc(epochTime)
-          .set({
-            'certificate_type': value,
-            'request_id': epochTime,
-            'first_name': first_name,
-            'middle_name': middle_name,
-            'last_name': last_name,
-            'gender': gender,
-            'resident_img_url': profilePic,
-            'email': email,
-            'resident_id': currentUser?.uid,
-            'status': 'Pending',
-            'age': age,
-            'birthdate': birthdate,
-            'birthplace': birthplace,
-            'civil_status': civil_status,
-            'purpose': puposeController.text,
-          })
-          .then((value) => print("Request Added"))
-          .catchError((error) => print("Failed to add Request: $error"));
+      FirebaseFirestore.instance.runTransaction((transaction) async {
+        // Get the document
+        DocumentSnapshot snapshot = await transaction.get(documentReference);
+
+        if (!snapshot.exists) {
+          throw Exception("User does not exist!");
+        }
+
+        // Update the follower count based on the current count
+        // Note: this could be done without a transaction
+        // by updating the population using FieldValue.increment()
+        var snaps = snapshot.data() as Map;
+
+        if (snaps['request_remaining'] > 1) {
+          request_remaining = snaps['request_remaining'] - 1;
+        }
+        if (snaps['request_remaining'] == 1) {
+          request_remaining = 0;
+          var today = DateTime.now();
+          var oneDayFromNow = today.add(const Duration(days: 1));
+          documentReference.update({
+            'requestWillBeAvailable': oneDayFromNow,
+            'request_remaining': 0,
+          });
+        }
+
+        // Perform an update on the document
+        if (request_remaining > 0) {
+          transaction.update(
+              documentReference, {'request_remaining': request_remaining});
+        }
+
+        // Return the new count
+        // return newFollowerCount;
+      });
+      if (request_remaining > 0) {
+        // Call the user's CollectionReference to add a new user
+        return await collection_ref.doc(epochTime).set({
+          'certificate_type': value,
+          'request_id': epochTime,
+          'first_name': first_name,
+          'middle_name': middle_name,
+          'last_name': last_name,
+          'gender': gender,
+          'resident_img_url': profilePic,
+          'email': email,
+          'resident_id': currentUser?.uid,
+          'status': 'Pending',
+          'age': age,
+          'birthdate': birthdate,
+          'birthplace': birthplace,
+          'civil_status': civil_status,
+          'purpose': puposeController.text,
+        }).then((value) {
+          Fluttertoast.showToast(
+            msg: "Request Added!",
+            toastLength: Toast.LENGTH_SHORT,
+            fontSize: 18,
+          );
+        }).catchError((error) {
+          Fluttertoast.showToast(
+            msg: "Failed to add Request: $error",
+            toastLength: Toast.LENGTH_SHORT,
+            fontSize: 18,
+          );
+        });
+      } else {
+        Fluttertoast.showToast(
+          msg: "Reach Limit of Requests for Today Please Come back tommorow!",
+          toastLength: Toast.LENGTH_SHORT,
+          fontSize: 18,
+        );
+        // var today = DateTime.now();
+        // var oneDayFromNow = today.add(const Duration(days: 1));
+        // documentReference.update({
+        //   'requestWillBeAvailable': oneDayFromNow,
+        // });
+        // return Fluttertoast.showToast(
+        //   msg: "Reach Limit of Requests for Today Please Come back tommorow!",
+        //   toastLength: Toast.LENGTH_SHORT,
+        //   fontSize: 18,
+        // );
+      }
     }
+
+    // Future<void> processRequest() {}
 
     return Center(
       child: Column(
