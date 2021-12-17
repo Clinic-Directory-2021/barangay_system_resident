@@ -77,13 +77,16 @@ class _DashboardState extends State<Dashboard> {
     var today = DateTime.now();
     var oneDayFromNow = today.add(const Duration(days: 1));
 
-    final bool isPastDate = pastDueDate.isBefore(today);
-
-    if (isPastDate) {
-      documentReference.update({
-        'request_remaining': 5,
-        'requestWillBeAvailable': oneDayFromNow,
-      });
+    try {
+      final bool isPastDate = pastDueDate.isBefore(today);
+      if (isPastDate) {
+        documentReference.update({
+          'request_remaining': 5,
+          'requestWillBeAvailable': oneDayFromNow,
+        });
+      }
+    } catch (e) {
+      print("isBefore is not yet instantiate");
     }
   }
 

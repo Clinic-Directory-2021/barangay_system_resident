@@ -19,12 +19,19 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final email_controller = TextEditingController();
+  final pass_controller = TextEditingController();
   String _email = "", _password = "";
   bool _obscureText = true;
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   Widget inputFile(
-      {label, obscureText = false, icon = Icons.email, storeTo, suffix}) {
+      {label,
+      obscureText = false,
+      icon = Icons.email,
+      storeTo,
+      suffix,
+      controller}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -32,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
           height: 5,
         ),
         TextFormField(
+          controller: controller,
           obscureText: obscureText,
           onChanged: (value) {
             setState(() {
@@ -122,8 +130,12 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   children: <Widget>[
                     inputFile(
-                        label: "Email", icon: Icons.email, storeTo: 'email'),
+                        label: "Email",
+                        icon: Icons.email,
+                        storeTo: 'email',
+                        controller: email_controller),
                     inputFile(
+                        controller: pass_controller,
                         label: "password",
                         obscureText: _obscureText,
                         icon: Icons.password,
@@ -187,6 +199,8 @@ class _LoginPageState extends State<LoginPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => Homepage()));
+                        email_controller.clear();
+                        pass_controller.clear();
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {
                           print('No user found for that email.');
