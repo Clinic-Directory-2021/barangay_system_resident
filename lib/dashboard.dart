@@ -22,7 +22,6 @@ String birthplace = "";
 String civil_status = "";
 
 int request_remaining = 5;
-
 var pastDueDate;
 
 class Dashboard extends StatefulWidget {
@@ -115,7 +114,9 @@ class _DashboardState extends State<Dashboard> {
         var snaps = snapshot.data() as Map;
 
         if (snaps['request_remaining'] > 1) {
-          request_remaining = snaps['request_remaining'] - 1;
+          setState(() {
+            request_remaining = snaps['request_remaining'] - 1;
+          });
         }
         if (snaps['request_remaining'] == 1) {
           request_remaining = 0;
@@ -250,6 +251,10 @@ class _DashboardState extends State<Dashboard> {
               ),
             ),
           ),
+          SizedBox(
+            height: 20,
+          ),
+          Text("You have " + request_remaining.toString() + " remaining"),
         ],
       ),
     );

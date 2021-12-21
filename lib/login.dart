@@ -88,12 +88,13 @@ class _LoginPageState extends State<LoginPage> {
             color: Colors.white,
           ),
         ),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Color(0xff20bf55), Color(0xff01baef)],
-                  begin: Alignment.topLeft)),
-        ),
+        backgroundColor: Colors.green,
+        // flexibleSpace: Container(
+        //   decoration: BoxDecoration(
+        //       gradient: LinearGradient(
+        //           colors: [Color(0xff20bf55), Color(0xff01baef)],
+        //           begin: Alignment.topLeft)),
+        // ),
       ),
       body: SingleChildScrollView(
         child: Container(
