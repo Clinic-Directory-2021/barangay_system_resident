@@ -87,6 +87,27 @@ class _DashboardState extends State<Dashboard> {
     } catch (e) {
       print("isBefore is not yet instantiate");
     }
+
+    FirebaseFirestore.instance.runTransaction((transaction) async {
+      // Get the document
+      DocumentSnapshot snapshot = await transaction.get(documentReference);
+
+      if (!snapshot.exists) {
+        throw Exception("User does not exist!");
+      }
+
+      // Update the follower count based on the current count
+      // Note: this could be done without a transaction
+      // by updating the population using FieldValue.increment()
+      var snaps = snapshot.data() as Map;
+
+      setState(() {
+        request_remaining = snaps['request_remaining'];
+      });
+
+      // Return the new count
+      // return newFollowerCount;
+    });
   }
 
   @override
