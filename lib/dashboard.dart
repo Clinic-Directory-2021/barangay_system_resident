@@ -21,8 +21,8 @@ String birthdate = "";
 String birthplace = "";
 String civil_status = "";
 
-int request_remaining = 5;
-var pastDueDate;
+// int request_remaining = 5;
+// var pastDueDate;
 
 class Dashboard extends StatefulWidget {
   @override
@@ -64,8 +64,8 @@ class _DashboardState extends State<Dashboard> {
           birthdate = doc['birthdate'];
           birthplace = doc['birthplace'];
           civil_status = doc['civil_status'];
-          pastDueDate =
-              DateTime.parse(doc['requestWillBeAvailable'].toDate().toString());
+          // pastDueDate =
+          //     DateTime.parse(doc['requestWillBeAvailable'].toDate().toString());
         });
       });
     });
@@ -73,41 +73,41 @@ class _DashboardState extends State<Dashboard> {
         .collection('resident_list')
         .doc(currentUser?.uid);
 
-    var today = DateTime.now();
-    var oneDayFromNow = today.add(const Duration(days: 1));
+    // var today = DateTime.now();
+    // var oneDayFromNow = today.add(const Duration(days: 1));
 
-    try {
-      final bool isPastDate = pastDueDate.isBefore(today);
-      if (isPastDate) {
-        documentReference.update({
-          'request_remaining': 5,
-          'requestWillBeAvailable': oneDayFromNow,
-        });
-      }
-    } catch (e) {
-      print("isBefore is not yet instantiate");
-    }
+    // try {
+    //   final bool isPastDate = pastDueDate.isBefore(today);
+    //   if (isPastDate) {
+    //     documentReference.update({
+    //       'request_remaining': 5,
+    //       'requestWillBeAvailable': oneDayFromNow,
+    //     });
+    //   }
+    // } catch (e) {
+    //   print("isBefore is not yet instantiate");
+    // }
 
-    FirebaseFirestore.instance.runTransaction((transaction) async {
-      // Get the document
-      DocumentSnapshot snapshot = await transaction.get(documentReference);
+    // FirebaseFirestore.instance.runTransaction((transaction) async {
+    //   // Get the document
+    //   DocumentSnapshot snapshot = await transaction.get(documentReference);
 
-      if (!snapshot.exists) {
-        throw Exception("User does not exist!");
-      }
+    //   if (!snapshot.exists) {
+    //     throw Exception("User does not exist!");
+    //   }
 
-      // Update the follower count based on the current count
-      // Note: this could be done without a transaction
-      // by updating the population using FieldValue.increment()
-      var snaps = snapshot.data() as Map;
+    //   // Update the follower count based on the current count
+    //   // Note: this could be done without a transaction
+    //   // by updating the population using FieldValue.increment()
+    //   var snaps = snapshot.data() as Map;
 
-      setState(() {
-        request_remaining = snaps['request_remaining'];
-      });
+    //   setState(() {
+    //     request_remaining = snaps['request_remaining'];
+    //   });
 
-      // Return the new count
-      // return newFollowerCount;
-    });
+    //   // Return the new count
+    //   // return newFollowerCount;
+    // });
   }
 
   @override
@@ -121,91 +121,93 @@ class _DashboardState extends State<Dashboard> {
 
     Future<void> addRequests() async {
       String epochTime = DateTime.now().millisecondsSinceEpoch.toString();
-      FirebaseFirestore.instance.runTransaction((transaction) async {
-        // Get the document
-        DocumentSnapshot snapshot = await transaction.get(documentReference);
+      // FirebaseFirestore.instance.runTransaction((transaction) async {
+      //   // Get the document
+      //   DocumentSnapshot snapshot = await transaction.get(documentReference);
 
-        if (!snapshot.exists) {
-          throw Exception("User does not exist!");
-        }
+      //   if (!snapshot.exists) {
+      //     throw Exception("User does not exist!");
+      //   }
 
-        // Update the follower count based on the current count
-        // Note: this could be done without a transaction
-        // by updating the population using FieldValue.increment()
-        var snaps = snapshot.data() as Map;
+      //   // Update the follower count based on the current count
+      //   // Note: this could be done without a transaction
+      //   // by updating the population using FieldValue.increment()
+      //   var snaps = snapshot.data() as Map;
 
-        if (snaps['request_remaining'] > 1) {
-          setState(() {
-            request_remaining = snaps['request_remaining'] - 1;
-          });
-        }
-        if (snaps['request_remaining'] == 1) {
-          request_remaining = 0;
-          var today = DateTime.now();
-          var oneDayFromNow = today.add(const Duration(days: 1));
-          documentReference.update({
-            'requestWillBeAvailable': oneDayFromNow,
-            'request_remaining': 0,
-          });
-        }
+      //   if (snaps['request_remaining'] > 1) {
+      //     setState(() {
+      //       request_remaining = snaps['request_remaining'] - 1;
+      //     });
+      //   }
+      //   if (snaps['request_remaining'] == 1) {
+      //     request_remaining = 0;
+      //     var today = DateTime.now();
+      //     var oneDayFromNow = today.add(const Duration(days: 1));
+      //     documentReference.update({
+      //       'requestWillBeAvailable': oneDayFromNow,
+      //       'request_remaining': 0,
+      //     });
+      //   }
 
-        // Perform an update on the document
-        if (request_remaining > 0) {
-          transaction.update(
-              documentReference, {'request_remaining': request_remaining});
-        }
+      //   Perform an update on the document
+      //   if (request_remaining > 0) {
+      //     transaction.update(
+      //         documentReference, {'request_remaining': request_remaining});
+      //   }
 
-        // Return the new count
-        // return newFollowerCount;
-      });
-      if (request_remaining > 0) {
-        // Call the user's CollectionReference to add a new user
-        return await collection_ref.doc(epochTime).set({
-          'certificate_type': value,
-          'request_id': epochTime,
-          'first_name': first_name,
-          'middle_name': middle_name,
-          'last_name': last_name,
-          'gender': gender,
-          'resident_img_url': profilePic,
-          'email': email,
-          'resident_id': currentUser?.uid,
-          'status': 'Pending',
-          'age': age,
-          'birthdate': birthdate,
-          'birthplace': birthplace,
-          'civil_status': civil_status,
-          'purpose': puposeController.text,
-        }).then((value) {
-          Fluttertoast.showToast(
-            msg: "Request Added!",
-            toastLength: Toast.LENGTH_SHORT,
-            fontSize: 18,
-          );
-        }).catchError((error) {
-          Fluttertoast.showToast(
-            msg: "Failed to add Request: $error",
-            toastLength: Toast.LENGTH_SHORT,
-            fontSize: 18,
-          );
-        });
-      } else {
+      //   // Return the new count
+      //   // return newFollowerCount;
+      // });
+
+      // Call the user's CollectionReference to add a new user
+      return await collection_ref.doc(epochTime).set({
+        'certificate_type': value,
+        'request_id': epochTime,
+        'first_name': first_name,
+        'middle_name': middle_name,
+        'last_name': last_name,
+        'gender': gender,
+        'resident_img_url': profilePic,
+        'email': email,
+        'resident_id': currentUser?.uid,
+        'status': 'Pending',
+        'age': age,
+        'birthdate': birthdate,
+        'birthplace': birthplace,
+        'civil_status': civil_status,
+        'purpose': puposeController.text,
+      }).then((value) {
         Fluttertoast.showToast(
-          msg: "Reach Limit of Requests for Today Please Come back tommorow!",
+          msg: "Request Added!",
           toastLength: Toast.LENGTH_SHORT,
           fontSize: 18,
         );
-        // var today = DateTime.now();
-        // var oneDayFromNow = today.add(const Duration(days: 1));
-        // documentReference.update({
-        //   'requestWillBeAvailable': oneDayFromNow,
-        // });
-        // return Fluttertoast.showToast(
-        //   msg: "Reach Limit of Requests for Today Please Come back tommorow!",
-        //   toastLength: Toast.LENGTH_SHORT,
-        //   fontSize: 18,
-        // );
-      }
+      }).catchError((error) {
+        Fluttertoast.showToast(
+          msg: "Failed to add Request: $error",
+          toastLength: Toast.LENGTH_SHORT,
+          fontSize: 18,
+        );
+      });
+
+      // if (request_remaining > 0) {
+      // } else {
+      //   Fluttertoast.showToast(
+      //     msg: "Reach Limit of Requests for Today Please Come back tommorow!",
+      //     toastLength: Toast.LENGTH_SHORT,
+      //     fontSize: 18,
+      //   );
+      //   // var today = DateTime.now();
+      //   // var oneDayFromNow = today.add(const Duration(days: 1));
+      //   // documentReference.update({
+      //   //   'requestWillBeAvailable': oneDayFromNow,
+      //   // });
+      //   // return Fluttertoast.showToast(
+      //   //   msg: "Reach Limit of Requests for Today Please Come back tommorow!",
+      //   //   toastLength: Toast.LENGTH_SHORT,
+      //   //   fontSize: 18,
+      //   // );
+      // }
     }
 
     // Future<void> processRequest() {}
@@ -275,7 +277,7 @@ class _DashboardState extends State<Dashboard> {
           SizedBox(
             height: 20,
           ),
-          Text("You have " + request_remaining.toString() + " remaining"),
+          // Text("You have " + request_remaining.toString() + " remaining"),
         ],
       ),
     );
