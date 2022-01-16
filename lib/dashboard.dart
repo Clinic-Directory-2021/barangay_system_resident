@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 bool shouldDisplay = false;
 final puposeController = TextEditingController();
+final refNoController = TextEditingController();
 
 String first_name = "";
 String middle_name = "";
@@ -42,6 +43,7 @@ class _DashboardState extends State<Dashboard> {
         .catchError((error) => print("Failed to update user: $error"));
   }
 
+<<<<<<< HEAD
   Future<void> showQRCode() async {
     return showDialog<void>(
       context: context,
@@ -100,6 +102,8 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
+=======
+>>>>>>> 8cfa9987d707debd98cd86da9e9c448aa63e3c70
   @override
   void initState() {
     super.initState();
@@ -235,6 +239,7 @@ class _DashboardState extends State<Dashboard> {
         'birthplace': birthplace,
         'civil_status': civil_status,
         'purpose': puposeController.text,
+        'ref_no': refNoController.text,
       }).then((value) {
         Fluttertoast.showToast(
           msg: "Request Added!",
@@ -269,6 +274,66 @@ class _DashboardState extends State<Dashboard> {
       // }
     }
 
+    Future<void> showQRCode() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Payment Tab'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Image.asset(
+                    'assets/new_qr_code.jpg',
+                    height: 200,
+                    width: 200,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: refNoController,
+                    onChanged: (value) {},
+                    decoration: InputDecoration(
+                        labelText: "Reference Number",
+                        hintText: "Enter Reference Number",
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey),
+                        ),
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey))),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "Please send your payment via gcash using this QR code, once sent input the Ref. No. that is texted to you by Gcash and submit it here. Email will be sent to you once your request has been successfully accepted.",
+                    style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('Confirm'),
+                onPressed: () {
+                  addRequests();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
     // Future<void> processRequest() {}
 
     return Center(
