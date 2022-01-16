@@ -43,7 +43,6 @@ class _DashboardState extends State<Dashboard> {
         .catchError((error) => print("Failed to update user: $error"));
   }
 
-<<<<<<< HEAD
   Future<void> showQRCode() async {
     return showDialog<void>(
       context: context,
@@ -102,8 +101,6 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-=======
->>>>>>> 8cfa9987d707debd98cd86da9e9c448aa63e3c70
   @override
   void initState() {
     super.initState();
