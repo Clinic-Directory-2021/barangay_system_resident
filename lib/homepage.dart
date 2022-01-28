@@ -157,6 +157,18 @@ class _HomepageState extends State<Homepage> {
         });
       });
     });
+
+    FirebaseFirestore.instance
+        .collection('list_of_issued_certificate_business')
+        .where('resident_id', isEqualTo: currentUser?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        setState(() {
+          total_certificates++;
+        });
+      });
+    });
   }
 
   @override

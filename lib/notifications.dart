@@ -175,6 +175,21 @@ class _NotificationsState extends State<Notifications> {
         });
       });
     });
+
+    FirebaseFirestore.instance
+        .collection('list_of_issued_certificate_business')
+        .where('resident_id', isEqualTo: currentUser?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        setState(() {
+          certificates.add([
+            doc["clearance_type"],
+            doc["business_pdf_url"],
+          ]);
+        });
+      });
+    });
   }
 
   //END INIT STATE
