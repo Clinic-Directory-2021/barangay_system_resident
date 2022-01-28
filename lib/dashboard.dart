@@ -469,31 +469,33 @@ class _DashboardState extends State<Dashboard> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(5)),
                       color: Colors.white),
-                  child: DropdownButtonFormField<String>(
-                    value: value,
-                    decoration:
-                        InputDecoration(prefixIcon: Icon(Icons.article)),
-                    iconSize: 36,
-                    icon: Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.black,
-                    ),
-                    hint: Text("Select certificate"),
-                    style: TextStyle(color: Colors.black),
-                    isExpanded: true,
-                    items: items.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (dropdownValue) {
-                      setState(() {
-                        shouldDisplay = !shouldDisplay;
-                        value = dropdownValue;
-                      });
-                    },
-                  ))),
+                  child: Column(children: [
+                    DropdownButtonFormField<String>(
+                      value: value,
+                      decoration:
+                          InputDecoration(prefixIcon: Icon(Icons.article)),
+                      iconSize: 36,
+                      icon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.black,
+                      ),
+                      hint: Text("Select certificate"),
+                      style: TextStyle(color: Colors.black),
+                      isExpanded: true,
+                      items: items.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (dropdownValue) {
+                        setState(() {
+                          shouldDisplay = !shouldDisplay;
+                          value = dropdownValue;
+                        });
+                      },
+                    )
+                  ]))),
           SizedBox(
             height: 20,
           ),
