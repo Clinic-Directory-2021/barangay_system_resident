@@ -106,7 +106,8 @@ class _ProfileState extends State<Profile> {
                             ClipOval(
                                 child: Image.network(
                               data['resident_img_url'],
-                              width: 150,
+                              width: 100,
+                              height: 100,
                             )),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,

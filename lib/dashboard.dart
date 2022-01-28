@@ -453,92 +453,91 @@ class _DashboardState extends State<Dashboard> {
     }
     // Future<void> processRequest() {}
 
-    return Center(
-      child: Column(
-        children: <Widget>[
-          Container(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-              child: Text(
-                'Select certificate you want to issue:',
-                style: TextStyle(fontSize: 18, fontFamily: 'Calibri'),
-              )),
-          SingleChildScrollView(
-              child: Container(
-                  margin:
-                      EdgeInsets.only(bottom: 5, top: 5, left: 10, right: 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Colors.white),
-                  child: Column(children: [
-                    DropdownButtonFormField<String>(
-                      value: value,
-                      decoration:
-                          InputDecoration(prefixIcon: Icon(Icons.article)),
-                      iconSize: 36,
-                      icon: Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black,
-                      ),
-                      hint: Text("Select certificate"),
-                      style: TextStyle(color: Colors.black),
-                      isExpanded: true,
-                      items: items.map((String value) {
-                        return DropdownMenuItem<String>(
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Center(
+          child: Column(
+            children: <Widget>[
+              Container(
+                  padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                  child: Text(
+                    'Select certificate you want to issue:',
+                    style: TextStyle(fontSize: 18, fontFamily: 'Calibri'),
+                  )),
+              SingleChildScrollView(
+                  child: Container(
+                      margin: EdgeInsets.only(
+                          bottom: 5, top: 5, left: 10, right: 10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          color: Colors.white),
+                      child: Column(children: [
+                        DropdownButtonFormField<String>(
                           value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (dropdownValue) {
-                        setState(() {
-                          shouldDisplay = !shouldDisplay;
-                          value = dropdownValue;
-                        });
-                      },
-                    )
-                  ]))),
-          SizedBox(
-            height: 20,
-          ),
-          if (value == "Indigency")
-            conditionalTextField("Purpose of Indigency"),
-          if (value == "Business(Sari-Sari)" ||
-              value == "Business(Convinience)")
-            conditionalTextField2("Applicant Name", "Place of Business"),
-          SizedBox(
-            height: 20,
-          ),
-          MaterialButton(
-            onPressed: () {
-              // addRequests();
-
-              if (value == "Business(Sari-Sari)") {
-                showQRCodeSari();
-              } else if (value == "Business(Convinience)") {
-                showQRCodeConvinience();
-              } else {
-                showQRCode();
-              }
-            },
-            color: Colors.green,
-            elevation: 0,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-            child: Text(
-              "Submit Request",
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-                color: Colors.white,
+                          decoration:
+                              InputDecoration(prefixIcon: Icon(Icons.article)),
+                          iconSize: 36,
+                          icon: Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.black,
+                          ),
+                          hint: Text("Select certificate"),
+                          style: TextStyle(color: Colors.black),
+                          isExpanded: true,
+                          items: items.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (dropdownValue) {
+                            setState(() {
+                              shouldDisplay = !shouldDisplay;
+                              value = dropdownValue;
+                            });
+                          },
+                        )
+                      ]))),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 60,
               ),
-            ),
+              if (value == "Indigency")
+                conditionalTextField("Purpose of Indigency"),
+              if (value == "Business(Sari-Sari)" ||
+                  value == "Business(Convinience)")
+                conditionalTextField2("Applicant Name", "Place of Business"),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 60,
+              ),
+              MaterialButton(
+                onPressed: () {
+                  // addRequests();
+
+                  if (value == "Business(Sari-Sari)") {
+                    showQRCodeSari();
+                  } else if (value == "Business(Convinience)") {
+                    showQRCodeConvinience();
+                  } else {
+                    showQRCode();
+                  }
+                },
+                color: Colors.green,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50)),
+                child: Text(
+                  "Submit Request",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              // Text("You have " + request_remaining.toString() + " remaining"),
+            ],
           ),
-          SizedBox(
-            height: 20,
-          ),
-          // Text("You have " + request_remaining.toString() + " remaining"),
-        ],
-      ),
-    );
+        ));
   }
 
   final items = [
