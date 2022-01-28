@@ -355,6 +355,8 @@ class _DashboardState extends State<Dashboard> {
         'civil_status': civil_status,
         'purpose': puposeController.text,
         'ref_no': refNoController.text,
+        'place_of_business': place_of_business.text,
+        'applicant_name': applicant_name.text,
       }).then((value) {
         Fluttertoast.showToast(
           msg: "Request Added!",
