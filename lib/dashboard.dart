@@ -8,6 +8,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 bool shouldDisplay = false;
 final puposeController = TextEditingController();
+final applicant_name = TextEditingController();
+final place_of_business = TextEditingController();
 final refNoController = TextEditingController();
 
 String first_name = "";
@@ -55,6 +57,122 @@ class _DashboardState extends State<Dashboard> {
               children: <Widget>[
                 Image.asset(
                   'assets/cert_indigent.jpg',
+                  height: 200,
+                  width: 200,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  onChanged: (value) {},
+                  decoration: InputDecoration(
+                      labelText: "Reference Number",
+                      hintText: "Enter Reference Number",
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey))),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Please send your payment via gcash using this QR code, once sent input the Ref. No. that is texted to you by Gcash and submit it here. Email will be sent to you once your request has been successfully accepted.",
+                  style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Confirm'),
+              onPressed: () {},
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> showQRCodeSari() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Payment Tab'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Image.asset(
+                  'assets/sari_sari_qr.jpg',
+                  height: 200,
+                  width: 200,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  onChanged: (value) {},
+                  decoration: InputDecoration(
+                      labelText: "Reference Number",
+                      hintText: "Enter Reference Number",
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey))),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Please send your payment via gcash using this QR code, once sent input the Ref. No. that is texted to you by Gcash and submit it here. Email will be sent to you once your request has been successfully accepted.",
+                  style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Confirm'),
+              onPressed: () {},
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> showQRCodeConvinience() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Payment Tab'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Image.asset(
+                  'assets/new_qr_code.jpg',
                   height: 200,
                   width: 200,
                 ),
@@ -342,46 +460,60 @@ class _DashboardState extends State<Dashboard> {
                 'Select certificate you want to issue:',
                 style: TextStyle(fontSize: 18, fontFamily: 'Calibri'),
               )),
-          Container(
-              margin: EdgeInsets.only(bottom: 5, top: 5, left: 10, right: 10),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                  color: Colors.white),
-              child: DropdownButtonFormField<String>(
-                value: value,
-                decoration: InputDecoration(prefixIcon: Icon(Icons.article)),
-                iconSize: 36,
-                icon: Icon(
-                  Icons.arrow_drop_down,
-                  color: Colors.black,
-                ),
-                hint: Text("Select certificate"),
-                style: TextStyle(color: Colors.black),
-                isExpanded: true,
-                items: items.map((String value) {
-                  return DropdownMenuItem<String>(
+          SingleChildScrollView(
+              child: Container(
+                  margin:
+                      EdgeInsets.only(bottom: 5, top: 5, left: 10, right: 10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Colors.white),
+                  child: DropdownButtonFormField<String>(
                     value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (dropdownValue) {
-                  setState(() {
-                    shouldDisplay = !shouldDisplay;
-                    value = dropdownValue;
-                  });
-                },
-              )),
+                    decoration:
+                        InputDecoration(prefixIcon: Icon(Icons.article)),
+                    iconSize: 36,
+                    icon: Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black,
+                    ),
+                    hint: Text("Select certificate"),
+                    style: TextStyle(color: Colors.black),
+                    isExpanded: true,
+                    items: items.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (dropdownValue) {
+                      setState(() {
+                        shouldDisplay = !shouldDisplay;
+                        value = dropdownValue;
+                      });
+                    },
+                  ))),
           SizedBox(
             height: 20,
           ),
-          if (value == "Indigency") conditionalTextField(),
+          if (value == "Indigency")
+            conditionalTextField("Purpose of Indigency"),
+          if (value == "Business(Sari-Sari)" ||
+              value == "Business(Convinience)")
+            conditionalTextField2("Applicant Name", "Place of Business"),
           SizedBox(
             height: 20,
           ),
           MaterialButton(
             onPressed: () {
               // addRequests();
-              showQRCode();
+
+              if (value == "Business(Sari-Sari)") {
+                showQRCodeSari();
+              } else if (value == "Business(Convinience)") {
+                showQRCodeConvinience();
+              } else {
+                showQRCode();
+              }
             },
             color: Colors.green,
             elevation: 0,
@@ -414,7 +546,9 @@ class _DashboardState extends State<Dashboard> {
     "Fencing",
     "Water",
     "Excavation",
-    "Blotter"
+    "Blotter",
+    "Business(Sari-Sari)",
+    "Business(Convinience)"
   ];
   String? value;
 //Widget for dropdown
@@ -440,16 +574,16 @@ class _DashboardState extends State<Dashboard> {
 //   bool shouldRepaint(CustomPainter oldDelegate) => false;
 // }
 
-  Widget conditionalTextField() {
+  Widget conditionalTextField(hint) {
     return Container(
       margin: EdgeInsets.only(bottom: 5, top: 5, left: 10, right: 10),
       child: TextField(
         controller: puposeController,
         decoration: InputDecoration(
-            labelText: "Purpose",
+            labelText: hint,
             fillColor: Colors.white,
             filled: true,
-            hintText: "Purpose of Indigency",
+            hintText: hint,
             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
@@ -457,6 +591,45 @@ class _DashboardState extends State<Dashboard> {
             border:
                 OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
       ),
+    );
+  }
+
+  Widget conditionalTextField2(hint1, hint2) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 5, top: 5, left: 10, right: 10),
+      child: Column(children: [
+        TextField(
+          controller: applicant_name,
+          decoration: InputDecoration(
+              labelText: hint1,
+              fillColor: Colors.white,
+              filled: true,
+              hintText: hint1,
+              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey))),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        TextField(
+          controller: place_of_business,
+          decoration: InputDecoration(
+              labelText: hint2,
+              fillColor: Colors.white,
+              filled: true,
+              hintText: hint2,
+              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey))),
+        )
+      ]),
     );
   }
 }

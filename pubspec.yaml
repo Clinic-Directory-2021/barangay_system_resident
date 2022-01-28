@@ -65,6 +65,7 @@ flutter:
     - assets/background.png
     - assets/new_qr_code.jpg
     - assets/cert_indigent.jpg
+    - assets/sari_sari_qr.jpg
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
