@@ -45,179 +45,63 @@ class _DashboardState extends State<Dashboard> {
         .catchError((error) => print("Failed to update user: $error"));
   }
 
-  Future<void> showQRCode() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Payment Tab'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Image.asset(
-                  'assets/cert_indigent.jpg',
-                  height: 200,
-                  width: 200,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  onChanged: (value) {},
-                  decoration: InputDecoration(
-                      labelText: "Reference Number",
-                      hintText: "Enter Reference Number",
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                      ),
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey))),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Please send your payment via gcash using this QR code, once sent input the Ref. No. that is texted to you by Gcash and submit it here. Email will be sent to you once your request has been successfully accepted.",
-                  style: TextStyle(fontSize: 12, color: Colors.grey[700]),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Confirm'),
-              onPressed: () {},
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> showQRCodeSari() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Payment Tab'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Image.asset(
-                  'assets/sari_sari_qr.jpg',
-                  height: 200,
-                  width: 200,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  onChanged: (value) {},
-                  decoration: InputDecoration(
-                      labelText: "Reference Number",
-                      hintText: "Enter Reference Number",
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                      ),
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey))),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Please send your payment via gcash using this QR code, once sent input the Ref. No. that is texted to you by Gcash and submit it here. Email will be sent to you once your request has been successfully accepted.",
-                  style: TextStyle(fontSize: 12, color: Colors.grey[700]),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Confirm'),
-              onPressed: () {},
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> showQRCodeConvinience() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Payment Tab'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Image.asset(
-                  'assets/new_qr_code.jpg',
-                  height: 200,
-                  width: 200,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  onChanged: (value) {},
-                  decoration: InputDecoration(
-                      labelText: "Reference Number",
-                      hintText: "Enter Reference Number",
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                      ),
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey))),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Please send your payment via gcash using this QR code, once sent input the Ref. No. that is texted to you by Gcash and submit it here. Email will be sent to you once your request has been successfully accepted.",
-                  style: TextStyle(fontSize: 12, color: Colors.grey[700]),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Confirm'),
-              onPressed: () {},
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // Future<void> showQRCode() async {
+  //   return showDialog<void>(
+  //     context: context,
+  //     barrierDismissible: false, // user must tap button!
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: const Text('Payment Tab'),
+  //         content: SingleChildScrollView(
+  //           child: ListBody(
+  //             children: <Widget>[
+  //               Image.asset(
+  //                 'assets/cert_indigent.jpg',
+  //                 height: 200,
+  //                 width: 200,
+  //               ),
+  //               SizedBox(
+  //                 height: 10,
+  //               ),
+  //               TextFormField(
+  //                 onChanged: (value) {},
+  //                 decoration: InputDecoration(
+  //                     labelText: "Reference Number",
+  //                     hintText: "Enter Reference Number",
+  //                     contentPadding:
+  //                         EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+  //                     enabledBorder: OutlineInputBorder(
+  //                       borderSide: BorderSide(color: Colors.grey),
+  //                     ),
+  //                     border: OutlineInputBorder(
+  //                         borderSide: BorderSide(color: Colors.grey))),
+  //               ),
+  //               SizedBox(
+  //                 height: 10,
+  //               ),
+  //               Text(
+  //                 "Please send your payment via gcash using this QR code, once sent input the Ref. No. that is texted to you by Gcash and submit it here. Email will be sent to you once your request has been successfully accepted.",
+  //                 style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             child: const Text('Cancel'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //           TextButton(
+  //             child: const Text('Confirm'),
+  //             onPressed: () {},
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   void initState() {
@@ -403,6 +287,128 @@ class _DashboardState extends State<Dashboard> {
                 children: <Widget>[
                   Image.asset(
                     'assets/new_qr_code.jpg',
+                    height: 200,
+                    width: 200,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: refNoController,
+                    onChanged: (value) {},
+                    decoration: InputDecoration(
+                        labelText: "Reference Number",
+                        hintText: "Enter Reference Number",
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey),
+                        ),
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey))),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "Please send your payment via gcash using this QR code, once sent input the Ref. No. that is texted to you by Gcash and submit it here. Email will be sent to you once your request has been successfully accepted.",
+                    style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('Confirm'),
+                onPressed: () {
+                  addRequests();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    Future<void> showQRCodeConvinience() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Payment Tab'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Image.asset(
+                    'assets/new_qr_code.jpg',
+                    height: 200,
+                    width: 200,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: refNoController,
+                    onChanged: (value) {},
+                    decoration: InputDecoration(
+                        labelText: "Reference Number",
+                        hintText: "Enter Reference Number",
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey),
+                        ),
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey))),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "Please send your payment via gcash using this QR code, once sent input the Ref. No. that is texted to you by Gcash and submit it here. Email will be sent to you once your request has been successfully accepted.",
+                    style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('Confirm'),
+                onPressed: () {
+                  addRequests();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    Future<void> showQRCodeSari() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Payment Tab'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Image.asset(
+                    'assets/sari_sari_qr.jpg',
                     height: 200,
                     width: 200,
                   ),
