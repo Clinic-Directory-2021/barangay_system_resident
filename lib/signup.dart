@@ -392,7 +392,7 @@ class _SignUpState extends State<SignUpPage> {
                               showDatePicker(
                                       context: context,
                                       initialDate: DateTime.now(),
-                                      firstDate: DateTime(2001),
+                                      firstDate: DateTime(1800),
                                       lastDate: DateTime(2222))
                                   .then((date) {
                                 setState(() {
