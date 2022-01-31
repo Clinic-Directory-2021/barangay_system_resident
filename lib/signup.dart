@@ -429,11 +429,6 @@ class _SignUpState extends State<SignUpPage> {
                       icon: Icons.add_location_alt_outlined,
                       storeTo: 'purok'),
                   inputFile(
-                    label: "Street",
-                    icon: Icons.add_road,
-                    storeTo: 'street',
-                  ),
-                  inputFile(
                       label: "Citizenship",
                       icon: Icons.book,
                       storeTo: 'citizenship'),
