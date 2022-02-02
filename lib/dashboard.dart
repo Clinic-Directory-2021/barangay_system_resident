@@ -242,6 +242,7 @@ class _DashboardState extends State<Dashboard> {
         'ref_no': refNoController.text,
         'place_of_business': place_of_business.text,
         'applicant_name': applicant_name.text,
+        'complaint': complainantController.text,
       }).then((value) {
         Fluttertoast.showToast(
           msg: "Request Added!",
@@ -510,7 +511,7 @@ class _DashboardState extends State<Dashboard> {
               ),
               if (value == "Indigency")
                 conditionalTextField("Purpose of Indigency"),
-              if (value == "Blotter") conditionalTextField3("Complainant"),
+              if (value == "Blotter") conditionalTextField3("Complaint"),
               if (value == "Business(Sari-Sari)" ||
                   value == "Business(Convinience)")
                 conditionalTextField2("Applicant Name", "Place of Business"),
