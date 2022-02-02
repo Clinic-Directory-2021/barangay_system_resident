@@ -286,7 +286,7 @@ class _DashboardState extends State<Dashboard> {
               child: ListBody(
                 children: <Widget>[
                   Image.asset(
-                    'assets/new_qr_code.jpg',
+                    'assets/cert_indigent.jpg',
                     height: 200,
                     width: 200,
                   ),
