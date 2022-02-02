@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 bool shouldDisplay = false;
 final puposeController = TextEditingController();
+final complainantController = TextEditingController();
 final applicant_name = TextEditingController();
 final place_of_business = TextEditingController();
 final refNoController = TextEditingController();
@@ -509,6 +510,7 @@ class _DashboardState extends State<Dashboard> {
               ),
               if (value == "Indigency")
                 conditionalTextField("Purpose of Indigency"),
+              if (value == "Blotter") conditionalTextField3("Complainant"),
               if (value == "Business(Sari-Sari)" ||
                   value == "Business(Convinience)")
                 conditionalTextField2("Applicant Name", "Place of Business"),
@@ -641,4 +643,24 @@ class _DashboardState extends State<Dashboard> {
       ]),
     );
   }
+}
+
+Widget conditionalTextField3(hint) {
+  return Container(
+    margin: EdgeInsets.only(bottom: 5, top: 5, left: 10, right: 10),
+    child: TextField(
+      controller: complainantController,
+      decoration: InputDecoration(
+          labelText: hint,
+          fillColor: Colors.white,
+          filled: true,
+          hintText: hint,
+          contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey),
+          ),
+          border:
+              OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
+    ),
+  );
 }
