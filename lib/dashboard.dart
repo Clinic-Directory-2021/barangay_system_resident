@@ -46,64 +46,6 @@ class _DashboardState extends State<Dashboard> {
         .catchError((error) => print("Failed to update user: $error"));
   }
 
-  // Future<void> showQRCode() async {
-  //   return showDialog<void>(
-  //     context: context,
-  //     barrierDismissible: false, // user must tap button!
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: const Text('Payment Tab'),
-  //         content: SingleChildScrollView(
-  //           child: ListBody(
-  //             children: <Widget>[
-  //               Image.asset(
-  //                 'assets/cert_indigent.jpg',
-  //                 height: 200,
-  //                 width: 200,
-  //               ),
-  //               SizedBox(
-  //                 height: 10,
-  //               ),
-  //               TextFormField(
-  //                 onChanged: (value) {},
-  //                 decoration: InputDecoration(
-  //                     labelText: "Reference Number",
-  //                     hintText: "Enter Reference Number",
-  //                     contentPadding:
-  //                         EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-  //                     enabledBorder: OutlineInputBorder(
-  //                       borderSide: BorderSide(color: Colors.grey),
-  //                     ),
-  //                     border: OutlineInputBorder(
-  //                         borderSide: BorderSide(color: Colors.grey))),
-  //               ),
-  //               SizedBox(
-  //                 height: 10,
-  //               ),
-  //               Text(
-  //                 "Please send your payment via gcash using this QR code, once sent input the Ref. No. that is texted to you by Gcash and submit it here. Email will be sent to you once your request has been successfully accepted.",
-  //                 style: TextStyle(fontSize: 12, color: Colors.grey[700]),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             child: const Text('Cancel'),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //           TextButton(
-  //             child: const Text('Confirm'),
-  //             onPressed: () {},
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -135,42 +77,6 @@ class _DashboardState extends State<Dashboard> {
     DocumentReference documentReference = FirebaseFirestore.instance
         .collection('resident_list')
         .doc(currentUser?.uid);
-
-    // var today = DateTime.now();
-    // var oneDayFromNow = today.add(const Duration(days: 1));
-
-    // try {
-    //   final bool isPastDate = pastDueDate.isBefore(today);
-    //   if (isPastDate) {
-    //     documentReference.update({
-    //       'request_remaining': 5,
-    //       'requestWillBeAvailable': oneDayFromNow,
-    //     });
-    //   }
-    // } catch (e) {
-    //   print("isBefore is not yet instantiate");
-    // }
-
-    // FirebaseFirestore.instance.runTransaction((transaction) async {
-    //   // Get the document
-    //   DocumentSnapshot snapshot = await transaction.get(documentReference);
-
-    //   if (!snapshot.exists) {
-    //     throw Exception("User does not exist!");
-    //   }
-
-    //   // Update the follower count based on the current count
-    //   // Note: this could be done without a transaction
-    //   // by updating the population using FieldValue.increment()
-    //   var snaps = snapshot.data() as Map;
-
-    //   setState(() {
-    //     request_remaining = snaps['request_remaining'];
-    //   });
-
-    //   // Return the new count
-    //   // return newFollowerCount;
-    // });
   }
 
   @override
@@ -184,44 +90,6 @@ class _DashboardState extends State<Dashboard> {
 
     Future<void> addRequests() async {
       String epochTime = DateTime.now().millisecondsSinceEpoch.toString();
-      // FirebaseFirestore.instance.runTransaction((transaction) async {
-      //   // Get the document
-      //   DocumentSnapshot snapshot = await transaction.get(documentReference);
-
-      //   if (!snapshot.exists) {
-      //     throw Exception("User does not exist!");
-      //   }
-
-      //   // Update the follower count based on the current count
-      //   // Note: this could be done without a transaction
-      //   // by updating the population using FieldValue.increment()
-      //   var snaps = snapshot.data() as Map;
-
-      //   if (snaps['request_remaining'] > 1) {
-      //     setState(() {
-      //       request_remaining = snaps['request_remaining'] - 1;
-      //     });
-      //   }
-      //   if (snaps['request_remaining'] == 1) {
-      //     request_remaining = 0;
-      //     var today = DateTime.now();
-      //     var oneDayFromNow = today.add(const Duration(days: 1));
-      //     documentReference.update({
-      //       'requestWillBeAvailable': oneDayFromNow,
-      //       'request_remaining': 0,
-      //     });
-      //   }
-
-      //   Perform an update on the document
-      //   if (request_remaining > 0) {
-      //     transaction.update(
-      //         documentReference, {'request_remaining': request_remaining});
-      //   }
-
-      //   // Return the new count
-      //   // return newFollowerCount;
-      // });
-
       // Call the user's CollectionReference to add a new user
       return await collection_ref.doc(epochTime).set({
         'certificate_type': value,
@@ -256,25 +124,6 @@ class _DashboardState extends State<Dashboard> {
           fontSize: 18,
         );
       });
-
-      // if (request_remaining > 0) {
-      // } else {
-      //   Fluttertoast.showToast(
-      //     msg: "Reach Limit of Requests for Today Please Come back tommorow!",
-      //     toastLength: Toast.LENGTH_SHORT,
-      //     fontSize: 18,
-      //   );
-      //   // var today = DateTime.now();
-      //   // var oneDayFromNow = today.add(const Duration(days: 1));
-      //   // documentReference.update({
-      //   //   'requestWillBeAvailable': oneDayFromNow,
-      //   // });
-      //   // return Fluttertoast.showToast(
-      //   //   msg: "Reach Limit of Requests for Today Please Come back tommorow!",
-      //   //   toastLength: Toast.LENGTH_SHORT,
-      //   //   fontSize: 18,
-      //   // );
-      // }
     }
 
     Future<void> showQRCode() async {
@@ -329,7 +178,17 @@ class _DashboardState extends State<Dashboard> {
               TextButton(
                 child: const Text('Confirm'),
                 onPressed: () {
-                  addRequests();
+                  if (refNoController.text == "") {
+                    Fluttertoast.showToast(
+                      msg: "Enter Ref Number.",
+                      toastLength: Toast.LENGTH_SHORT,
+                      fontSize: 18,
+                    );
+                  } else {
+                    addRequests();
+                    Navigator.of(context).pop();
+                    refNoController.clear();
+                  }
                 },
               ),
             ],
@@ -390,7 +249,17 @@ class _DashboardState extends State<Dashboard> {
               TextButton(
                 child: const Text('Confirm'),
                 onPressed: () {
-                  addRequests();
+                  if (refNoController.text == "") {
+                    Fluttertoast.showToast(
+                      msg: "Enter Ref Number.",
+                      toastLength: Toast.LENGTH_SHORT,
+                      fontSize: 18,
+                    );
+                  } else {
+                    addRequests();
+                    Navigator.of(context).pop();
+                    refNoController.clear();
+                  }
                 },
               ),
             ],
@@ -451,7 +320,17 @@ class _DashboardState extends State<Dashboard> {
               TextButton(
                 child: const Text('Confirm'),
                 onPressed: () {
-                  addRequests();
+                  if (refNoController.text == "") {
+                    Fluttertoast.showToast(
+                      msg: "Enter Ref Number.",
+                      toastLength: Toast.LENGTH_SHORT,
+                      fontSize: 18,
+                    );
+                  } else {
+                    addRequests();
+                    Navigator.of(context).pop();
+                    refNoController.clear();
+                  }
                 },
               ),
             ],
@@ -459,7 +338,6 @@ class _DashboardState extends State<Dashboard> {
         },
       );
     }
-    // Future<void> processRequest() {}
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -543,7 +421,6 @@ class _DashboardState extends State<Dashboard> {
                   ),
                 ),
               ),
-              // Text("You have " + request_remaining.toString() + " remaining"),
             ],
           ),
         ));
@@ -563,29 +440,6 @@ class _DashboardState extends State<Dashboard> {
     "Business(Convinience)"
   ];
   String? value;
-//Widget for dropdown
-  // Widget dropdown() {
-  //   return ;
-  // }
-
-//Curved container
-// class HeaderCurvedContainer extends CustomPainter {
-//   @override
-//   void paint(Canvas canvas, Size size) {
-//     Paint paint = Paint()..color = Color(0xff555555);
-//     Path path = Path()
-//       ..relativeLineTo(0, 150)
-//       ..quadraticBezierTo(size.width / 2, 225, size.width, 150)
-//       ..relativeLineTo(0, -150)
-//       ..close();
-
-//     canvas.drawPath(path, paint);
-//   }
-
-//   @override
-//   bool shouldRepaint(CustomPainter oldDelegate) => false;
-// }
-
   Widget conditionalTextField(hint) {
     return Container(
       margin: EdgeInsets.only(bottom: 5, top: 5, left: 10, right: 10),
