@@ -116,14 +116,6 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
               padding: EdgeInsets.symmetric(horizontal: 40),
               child: Container(
                 padding: EdgeInsets.only(top: 30, left: 3),
-                // decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(20),
-                //     border: Border(
-                //       bottom: BorderSide(color: Colors.black),
-                //       top: BorderSide(color: Colors.black),
-                //       left: BorderSide(color: Colors.black),
-                //       right: BorderSide(color: Colors.black),
-                //     )),
                 child: MaterialButton(
                   minWidth: double.infinity,
                   height: 60,
@@ -135,7 +127,7 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
                           MaterialPageRoute(builder: (context) => LoginPage()));
                     } on FirebaseAuthException catch (e) {
                       Fluttertoast.showToast(
-                        msg: e.message.toString(),
+                        msg: "Email does not exist.",
                         toastLength: Toast.LENGTH_SHORT,
                         fontSize: 18,
                       );
@@ -156,55 +148,6 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
                 ),
               ),
             ),
-            // child:
-            // Container(
-            //   padding: EdgeInsets.only(top: 30, left: 3),
-            //   decoration: BoxDecoration(
-            //       borderRadius: BorderRadius.circular(20),
-            //       border: Border(
-            //         bottom: BorderSide(color: Colors.black),
-            //         top: BorderSide(color: Colors.black),
-            //         left: BorderSide(color: Colors.black),
-            //         right: BorderSide(color: Colors.black),
-            //       )),
-            //   child: MaterialButton(
-            //     minWidth: double.infinity,
-            //     height: 60,
-            //     onPressed: () {},
-            //     color: Color(0xff0095ff),
-            //     elevation: 0,
-            //     shape: RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(50)),
-            //     child: Text(
-            //       "Login",
-            //       style: TextStyle(
-            //         fontWeight: FontWeight.w600,
-            //         fontSize: 18,
-            //         color: Colors.white,
-            //       ),
-            //     ),
-            //   ),
-            // ),
-
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: <Widget>[
-            //     Text("Don't have an account?"),
-            //     Text(
-            //       " Sign up",
-            //       style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-            //     ),
-            //   ],
-            // ),
-
-            // Container(
-            //   padding: EdgeInsets.only(top: 100),
-            //   height: 100,
-            //   decoration: BoxDecoration(
-            //       image: DecorationImage(
-            //           image: AssetImage("assets/bulsu.png"),
-            //           fit: BoxFit.fitHeight)),
-            // )
           ],
         ),
       ),

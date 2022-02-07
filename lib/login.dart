@@ -190,33 +190,41 @@ class _LoginPageState extends State<LoginPage> {
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: () async {
-                      try {
-                        UserCredential userCredential = await FirebaseAuth
-                            .instance
-                            .signInWithEmailAndPassword(
-                                email: _email, password: _password);
+                      if (_email == "" || _password == "") {
+                        Fluttertoast.showToast(
+                          msg: "All fields are required.",
+                          toastLength: Toast.LENGTH_SHORT,
+                          fontSize: 18,
+                        );
+                      } else {
+                        try {
+                          UserCredential userCredential = await FirebaseAuth
+                              .instance
+                              .signInWithEmailAndPassword(
+                                  email: _email, password: _password);
 
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Homepage()));
-                        email_controller.clear();
-                        pass_controller.clear();
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == 'user-not-found') {
-                          print('No user found for that email.');
-                          Fluttertoast.showToast(
-                            msg: "No user found for that email.",
-                            toastLength: Toast.LENGTH_SHORT,
-                            fontSize: 18,
-                          );
-                        } else if (e.code == 'wrong-password') {
-                          print('Wrong password provided for that user.');
-                          Fluttertoast.showToast(
-                            msg: "Wrong password provided for that user.",
-                            toastLength: Toast.LENGTH_SHORT,
-                            fontSize: 18,
-                          );
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Homepage()));
+                          email_controller.clear();
+                          pass_controller.clear();
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'user-not-found') {
+                            print('No user found for that email.');
+                            Fluttertoast.showToast(
+                              msg: "No user found for that email.",
+                              toastLength: Toast.LENGTH_SHORT,
+                              fontSize: 18,
+                            );
+                          } else if (e.code == 'wrong-password') {
+                            print('Wrong password provided for that user.');
+                            Fluttertoast.showToast(
+                              msg: "Wrong password provided for that user.",
+                              toastLength: Toast.LENGTH_SHORT,
+                              fontSize: 18,
+                            );
+                          }
                         }
                       }
                     },
