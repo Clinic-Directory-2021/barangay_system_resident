@@ -242,7 +242,6 @@ class _SignUpState extends State<SignUpPage> {
             'phone_number': _phone_number,
             'religion': _religion,
             'status': 'Offline',
-            'street': _street,
             'resident_img_directory': img_file_directory,
             'resident_img_url': downloadURL,
             'request_remaining': 5,
@@ -423,7 +422,6 @@ class _SignUpState extends State<SignUpPage> {
                       label: "Birth Place",
                       icon: Icons.add_location_alt_outlined,
                       storeTo: 'birthplace'),
-                  inputFile(label: "Street", icon: Icons.add_road),
                   inputFile(
                       label: "Purok/Area",
                       icon: Icons.add_location_alt_outlined,
