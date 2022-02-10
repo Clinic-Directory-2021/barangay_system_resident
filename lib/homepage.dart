@@ -7,12 +7,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:fluttertoast/fluttertoast.dart';
 
 int total_certificates = 0;
 
+final NewPasswordController = TextEditingController();
+final ConfirmNewPasswordController = TextEditingController();
+final OldPasswordController = TextEditingController();
+
 // ignore: must_be_immutable
 class Homepage extends StatefulWidget {
+  static String OldPassword = "";
+
   @override
   State<Homepage> createState() => _HomepageState();
 }
@@ -33,6 +40,11 @@ class _HomepageState extends State<Homepage> {
     switch (item) {
       case 1:
         {
+          showChangePassModal();
+          break;
+        }
+      case 2:
+        {
           await FirebaseAuth.instance.signOut();
           updateUser();
           Navigator.pop(
@@ -40,9 +52,130 @@ class _HomepageState extends State<Homepage> {
           break;
         }
 
-      case 1:
+      case 2:
         break;
     }
+  }
+
+  Future<void> showChangePassModal() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Change Password'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                TextFormField(
+                  controller: OldPasswordController,
+                  onChanged: (value) {},
+                  obscureText: true,
+                  decoration: InputDecoration(
+                      labelText: "Old Password",
+                      hintText: "Old Password",
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey))),
+                ),
+                TextFormField(
+                  controller: NewPasswordController,
+                  onChanged: (value) {},
+                  obscureText: true,
+                  decoration: InputDecoration(
+                      labelText: "New Password",
+                      hintText: "New Password",
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey))),
+                ),
+                TextFormField(
+                  controller: ConfirmNewPasswordController,
+                  onChanged: (value) {},
+                  obscureText: true,
+                  decoration: InputDecoration(
+                      labelText: "Confirm New Password",
+                      hintText: "Confirm New Password",
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey))),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                ConfirmNewPasswordController.text = "";
+                NewPasswordController.text = "";
+                OldPasswordController.text = "";
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Confirm'),
+              onPressed: () {
+                if (ConfirmNewPasswordController.text ==
+                    NewPasswordController.text) {
+                  if (Homepage.OldPassword == OldPasswordController.text) {
+                    _changePassword(ConfirmNewPasswordController.text);
+                  } else {
+                    Fluttertoast.showToast(
+                      msg: "Old Password is Incorrect!",
+                      toastLength: Toast.LENGTH_SHORT,
+                      fontSize: 18,
+                    );
+                  }
+                } else {
+                  Fluttertoast.showToast(
+                    msg: "New Password And Confirm Password Not Match!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    fontSize: 18,
+                  );
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _changePassword(String password) async {
+    //Create an instance of the current user.
+    var user = FirebaseAuth.instance.currentUser;
+
+    //Pass in the password to updatePassword.
+    user?.updatePassword(password).then((_) {
+      Fluttertoast.showToast(
+        msg: "Successfully changed password",
+        toastLength: Toast.LENGTH_SHORT,
+        fontSize: 18,
+      );
+    }).catchError((error) {
+      Fluttertoast.showToast(
+        msg: "Password can't be changed" + error.toString(),
+        toastLength: Toast.LENGTH_SHORT,
+        fontSize: 18,
+      );
+      //This might happen, when the wrong password is in, the user isn't found, or if the user hasn't logged in recently.
+    });
   }
 
   @override
@@ -193,6 +326,10 @@ class _HomepageState extends State<Homepage> {
                 itemBuilder: (context) => [
                   PopupMenuItem<int>(
                     value: 1,
+                    child: Text('Change Password'),
+                  ),
+                  PopupMenuItem<int>(
+                    value: 2,
                     child: Text('Logout'),
                   ),
                 ],

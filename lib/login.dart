@@ -202,6 +202,7 @@ class _LoginPageState extends State<LoginPage> {
                               .instance
                               .signInWithEmailAndPassword(
                                   email: _email, password: _password);
+                          Homepage.OldPassword = _password;
 
                           Navigator.push(
                               context,
