@@ -83,7 +83,6 @@ class _ProfileState extends State<Profile> {
 
           Profile.age = data['age'];
           Profile.birthdate = data['birthdate'].toString();
-          Profile.birthplace = data['birthplace'];
           Profile.civil_status = data['civil_status'];
           return SingleChildScrollView(
             padding: EdgeInsets.only(bottom: 10),
@@ -160,22 +159,11 @@ class _ProfileState extends State<Profile> {
                   subtitle: "Birth Date",
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height / 50),
-                listItem(
-                  title: data['birthplace'],
-                  leading: Icons.location_city,
-                  subtitle: "Birth Place",
-                ),
                 SizedBox(height: MediaQuery.of(context).size.height / 50),
                 listItem(
                   title: data['phone_number'],
                   leading: Icons.phone,
                   subtitle: "Phone Number",
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height / 50),
-                listItem(
-                  title: data['street'],
-                  leading: Icons.add_road,
-                  subtitle: "Street",
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height / 50),
                 listItem(
@@ -200,6 +188,18 @@ class _ProfileState extends State<Profile> {
                   title: data['relation'],
                   leading: Icons.account_balance,
                   subtitle: "Relation to Head Famly",
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 50),
+                listItem(
+                  title: data['father'],
+                  leading: Icons.perm_identity,
+                  subtitle: "Father's name",
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 50),
+                listItem(
+                  title: data['mother'],
+                  leading: Icons.perm_identity,
+                  subtitle: "Mother's Name",
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height / 50),
                 listItem(

@@ -24,6 +24,8 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUpPage> {
+  RegExp numReg = RegExp(r".*[0-9].*");
+  RegExp letterReg = RegExp(r".*[A-Za-z].*");
   bool _password_obscureText = true;
   bool _confirm_obscureText = true;
   String img_file_directory = "";
@@ -93,21 +95,22 @@ class _SignUpState extends State<SignUpPage> {
       _email = "",
       _password = "",
       _confirm_password = "",
-      _civil_status = "",
-      _age = "",
       _phone_number = "",
-      _birthplace = "",
-      _purok = "",
       _citizenship = "",
-      _diff_disabled = "",
       _relation = "",
       _religion = "",
       _user_id = "",
-      _street = "";
+      _father = "",
+      _mother = "";
 
 //Widget for inputfile
   Widget inputFile(
-      {label, obscureText = false, icon = Icons.email, storeTo, suffix}) {
+      {label,
+      obscureText = false,
+      icon = Icons.email,
+      storeTo,
+      suffix,
+      keyboard_type = TextInputType.text}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -116,6 +119,7 @@ class _SignUpState extends State<SignUpPage> {
         ),
         TextField(
           obscureText: obscureText,
+          keyboardType: keyboard_type,
           onChanged: (value) {
             setState(() {
               if (storeTo == 'email') {
@@ -130,25 +134,17 @@ class _SignUpState extends State<SignUpPage> {
                 _middle_name = value.trim();
               } else if (storeTo == 'last_name') {
                 _last_name = value.trim();
-              } else if (storeTo == 'civil_status') {
-                _civil_status = value.trim();
-              } else if (storeTo == 'age') {
-                _age = value.trim();
               } else if (storeTo == 'phone_number') {
                 _phone_number = value.trim();
-              } else if (storeTo == 'birthplace') {
-                _birthplace = value.trim();
-              } else if (storeTo == 'purok') {
-                _purok = value.trim();
               } else if (storeTo == 'citizenship') {
                 _citizenship = value.trim();
-              } else if (storeTo == 'diff_disabled') {
-                _diff_disabled = value.trim();
               } else if (storeTo == 'relation') {
                 _relation = value.trim();
+              } else if (storeTo == 'father') {
+                _father = value.trim();
+              } else if (storeTo == 'mother') {
+                _mother = value.trim();
               } else if (storeTo == 'religion') {
-                _religion = value.trim();
-              } else if (storeTo == 'street') {
                 _religion = value.trim();
               }
             });
@@ -220,6 +216,18 @@ class _SignUpState extends State<SignUpPage> {
       String downloadURL = await firebase_storage.FirebaseStorage.instance
           .ref(img_file_directory)
           .getDownloadURL();
+      final age = _dateTime.toString().split('-');
+      DateTime now = new DateTime.now();
+      final current_month = now.month;
+      final current_year = now.year;
+      final month = int.parse(age[1]);
+      int age_final = 0;
+      if (current_month < month) {
+        age_final = (current_year - 1 - int.parse(age[0]));
+      } else {
+        age_final = (current_year - 1 - int.parse(age[0]));
+      }
+
       Navigator.pop(
           context, MaterialPageRoute(builder: (context) => LoginPage()));
       return collection_ref
@@ -231,14 +239,15 @@ class _SignUpState extends State<SignUpPage> {
             'last_name': _last_name,
             'gender': genderValue,
             'email': _email,
-            'age': _age,
+            'age': age_final.toString(),
             'birthdate': _dateTime.toString(),
-            'birthplace': _birthplace,
-            'civil_status': _civil_status,
-            'purok': _purok,
+            'civil_status': civilValue,
+            'purok': purokValue,
             'citizenship': _citizenship,
             'relation': _relation,
-            'diff_disabled': _diff_disabled,
+            'father': _father,
+            'mother': _mother,
+            'diff_disabled': abledValue,
             'phone_number': _phone_number,
             'religion': _religion,
             'status': 'Offline',
@@ -336,7 +345,10 @@ class _SignUpState extends State<SignUpPage> {
                       storeTo: 'last_name'),
                   dropdown(),
                   inputFile(
-                      label: "Email", icon: Icons.email, storeTo: 'email'),
+                      label: "Email",
+                      icon: Icons.email,
+                      storeTo: 'email',
+                      keyboard_type: TextInputType.emailAddress),
                   inputFile(
                       label: "Password",
                       icon: Icons.password,
@@ -367,14 +379,11 @@ class _SignUpState extends State<SignUpPage> {
                       ),
                       obscureText: _confirm_obscureText,
                       storeTo: 'confirm_password'),
-                  inputFile(
-                      label: "Civil Status",
-                      icon: Icons.add_location,
-                      storeTo: 'civil_status'),
-                  inputFile(
-                      label: "Age",
-                      icon: Icons.assignment_ind_outlined,
-                      storeTo: 'age'),
+                  civilStatus(),
+                  // inputFile(
+                  //     label: "Age",
+                  //     icon: Icons.assignment_ind_outlined,
+                  //     storeTo: 'age'),
                   //Date picker
                   Container(
                     padding: EdgeInsets.only(left: 5, right: 5),
@@ -417,23 +426,22 @@ class _SignUpState extends State<SignUpPage> {
                   inputFile(
                       label: "Phone Number",
                       icon: Icons.ad_units,
-                      storeTo: 'phone_number'),
-                  inputFile(
-                      label: "Birth Place",
-                      icon: Icons.add_location_alt_outlined,
-                      storeTo: 'birthplace'),
-                  inputFile(
-                      label: "Purok/Area",
-                      icon: Icons.add_location_alt_outlined,
-                      storeTo: 'purok'),
+                      storeTo: 'phone_number',
+                      keyboard_type: TextInputType.phone),
+                  purok(),
                   inputFile(
                       label: "Citizenship",
                       icon: Icons.book,
                       storeTo: 'citizenship'),
+                  abledPerson(),
                   inputFile(
-                      label: "Differently Disabled Person",
-                      icon: Icons.accessible_rounded,
-                      storeTo: 'diff_disabled'),
+                      label: "Father's Name",
+                      icon: Icons.perm_identity,
+                      storeTo: 'father'),
+                  inputFile(
+                      label: "Mother's Name",
+                      icon: Icons.perm_identity,
+                      storeTo: 'mother'),
                   inputFile(
                       label: "Relation to Head Family",
                       icon: Icons.account_balance,
@@ -458,23 +466,33 @@ class _SignUpState extends State<SignUpPage> {
                         _email != "" &&
                         _password != "" &&
                         _confirm_password != "" &&
-                        _civil_status != "" &&
-                        _age != "" &&
+                        civilValue != "" &&
                         _phone_number != "" &&
-                        _birthplace != "" &&
-                        _purok != "" &&
+                        purokValue != "" &&
                         _citizenship != "" &&
-                        _diff_disabled != "" &&
+                        abledValue != "" &&
                         _relation != "" &&
+                        _father != "" &&
+                        _mother != "" &&
                         _religion != "" &&
                         _dateTime != null &&
                         genderValue != "" &&
-                        image != null) {
+                        image != null &&
+                        numReg.hasMatch(_password) &&
+                        letterReg.hasMatch(_password)) {
                       addResident();
                     } else if (_password != _confirm_password) {
                       print("Password Do not Match");
                       Fluttertoast.showToast(
                         msg: "Password Do not Match",
+                        toastLength: Toast.LENGTH_SHORT,
+                        fontSize: 18,
+                      );
+                    } else if (!(numReg.hasMatch(_password) &&
+                        letterReg.hasMatch(_password))) {
+                      print("Please input a valid password (ie. kenneth123)");
+                      Fluttertoast.showToast(
+                        msg: "Please input a valid password (ie. kenneth123)",
                         toastLength: Toast.LENGTH_SHORT,
                         fontSize: 18,
                       );
@@ -520,7 +538,30 @@ class _SignUpState extends State<SignUpPage> {
 }
 
 final items = ["Select your gender", "Male", "Female"];
+final abledItems = ["Differend Abled Person", "Yes", "No"];
+final civilItems = [
+  "Select Status",
+  "Single",
+  "Married",
+  "Divorced",
+  "Widowed"
+];
+final purokItems = [
+  "Select Purok",
+  "Ibayong Sapa",
+  "Ochoa 1",
+  "Ochoa 2",
+  "Calzada",
+  "Manggahan",
+  "Kabilang Pulo",
+  "Paraan",
+  "Gitna"
+];
+
 String? genderValue;
+String? purokValue;
+String? civilValue;
+String? abledValue;
 //Widget for dropdown/Gender
 Widget dropdown() {
   return Container(
@@ -546,6 +587,91 @@ Widget dropdown() {
         }).toList(),
         onChanged: (s) {
           genderValue = s;
+        },
+      ));
+}
+
+Widget purok() {
+  return Container(
+      margin: EdgeInsets.only(bottom: 5),
+      decoration:
+          BoxDecoration(border: Border.all(color: Colors.grey, width: 1)),
+      child: DropdownButtonFormField<String>(
+        value: purokValue,
+        decoration:
+            InputDecoration(prefixIcon: Icon(Icons.add_location_alt_outlined)),
+        iconSize: 36,
+        icon: Icon(
+          Icons.arrow_drop_down,
+          color: Colors.black,
+        ),
+        hint: Text("Select Purok"),
+        style: TextStyle(color: Colors.black),
+        isExpanded: true,
+        items: purokItems.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (s) {
+          purokValue = s;
+        },
+      ));
+}
+
+Widget civilStatus() {
+  return Container(
+      margin: EdgeInsets.only(bottom: 5),
+      decoration:
+          BoxDecoration(border: Border.all(color: Colors.grey, width: 1)),
+      child: DropdownButtonFormField<String>(
+        value: civilValue,
+        decoration: InputDecoration(prefixIcon: Icon(Icons.add_location)),
+        iconSize: 36,
+        icon: Icon(
+          Icons.arrow_drop_down,
+          color: Colors.black,
+        ),
+        hint: Text("Select Status"),
+        style: TextStyle(color: Colors.black),
+        isExpanded: true,
+        items: civilItems.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (s) {
+          civilValue = s;
+        },
+      ));
+}
+
+Widget abledPerson() {
+  return Container(
+      margin: EdgeInsets.only(bottom: 5),
+      decoration:
+          BoxDecoration(border: Border.all(color: Colors.grey, width: 1)),
+      child: DropdownButtonFormField<String>(
+        value: abledValue,
+        decoration: InputDecoration(prefixIcon: Icon(Icons.accessible_rounded)),
+        iconSize: 36,
+        icon: Icon(
+          Icons.arrow_drop_down,
+          color: Colors.black,
+        ),
+        hint: Text("Different Abled Person"),
+        style: TextStyle(color: Colors.black),
+        isExpanded: true,
+        items: abledItems.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (s) {
+          abledValue = s;
         },
       ));
 }

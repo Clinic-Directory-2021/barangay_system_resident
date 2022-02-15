@@ -347,7 +347,7 @@ class _DashboardState extends State<Dashboard> {
               Container(
                   padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                   child: Text(
-                    'Select certificate you want to issue:',
+                    'Select Certificate to Request:',
                     style: TextStyle(fontSize: 18, fontFamily: 'Calibri'),
                   )),
               SingleChildScrollView(
@@ -435,9 +435,7 @@ class _DashboardState extends State<Dashboard> {
     "Fencing",
     "Water",
     "Excavation",
-    "Blotter",
     "Business(Sari-Sari)",
-    "Business(Convinience)"
   ];
   String? value;
   Widget conditionalTextField(hint) {
