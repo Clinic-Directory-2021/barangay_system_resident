@@ -212,16 +212,14 @@ class _LoginPageState extends State<LoginPage> {
                           pass_controller.clear();
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'user-not-found') {
-                            print('No user found for that email.');
                             Fluttertoast.showToast(
-                              msg: "No user found for that email.",
+                              msg: "Username or Password is Incorrect.",
                               toastLength: Toast.LENGTH_SHORT,
                               fontSize: 18,
                             );
                           } else if (e.code == 'wrong-password') {
-                            print('Wrong password provided for that user.');
                             Fluttertoast.showToast(
-                              msg: "Wrong password provided for that user.",
+                              msg: "Username or Password is Incorrect.",
                               toastLength: Toast.LENGTH_SHORT,
                               fontSize: 18,
                             );
