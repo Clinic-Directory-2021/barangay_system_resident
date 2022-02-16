@@ -217,6 +217,8 @@ class _SignUpState extends State<SignUpPage> {
           .ref(img_file_directory)
           .getDownloadURL();
       final age = _dateTime.toString().split('-');
+      final DateFormat formatter = DateFormat('yyyy-MM-dd');
+      final String dateTime = formatter.format(_dateTime!);
       DateTime now = new DateTime.now();
       final current_month = now.month;
       final current_year = now.year;
@@ -240,7 +242,7 @@ class _SignUpState extends State<SignUpPage> {
             'gender': genderValue,
             'email': _email,
             'age': age_final.toString(),
-            'birthdate': _dateTime.toString(),
+            'birthdate': dateTime,
             'civil_status': civilValue,
             'purok': purokValue,
             'citizenship': _citizenship,
